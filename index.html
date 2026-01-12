@@ -1,136 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ZERO SIX SKY LOUNGE - ORDER</title>
 
 <style>
-body{
-  font-family:Arial;
-  background:#0b1c2d;
-  color:#ffffff;
-  padding:12px
-}
+  body{font-family:Arial;background:#0b1c2d;color:#fff;padding:12px}
+  h1{font-size:20px;text-align:center;color:#64b5f6}
+  h2{font-size:14px;text-align:center;margin-bottom:15px;color:#cfd8dc}
 
-h1{
-  font-size:20px;
-  text-align:center;
-  color:#64b5f6
-}
+  .box{background:#13293d;padding:12px;border-radius:12px;margin-bottom:12px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+  label{font-size:13px;color:#90caf9}
 
-h2{
-  font-size:14px;
-  text-align:center;
-  margin-bottom:15px;
-  color:#cfd8dc
-}
+  input,textarea,select{
+    width:100%;padding:8px;border-radius:8px;border:none;margin-top:5px;margin-bottom:10px;
+    font-size:14px;background:#0b1c2d;color:#fff
+  }
+  input::placeholder, textarea::placeholder{color:#90a4ae}
 
-.box{
-  background:#13293d;
-  padding:12px;
-  border-radius:12px;
-  margin-bottom:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,.3)
-}
+  /* Accordion header */
+  .acc{
+    background:linear-gradient(135deg,#1e88e5,#42a5f5);
+    color:#fff;padding:10px;border-radius:10px;margin-top:10px;
+    cursor:pointer;font-weight:bold;font-size:14px;box-shadow:0 3px 8px rgba(0,0,0,.3);
+    display:flex;justify-content:space-between;align-items:center
+  }
+  .acc small{opacity:.9;font-weight:normal}
+  .acc2{
+    background:linear-gradient(135deg,#1b3550,#224a6a);
+    color:#eaf4ff;padding:10px;border-radius:10px;margin-top:8px;
+    cursor:pointer;font-weight:bold;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.25);
+    display:flex;justify-content:space-between;align-items:center
+  }
 
-label{
-  font-size:13px;
-  color:#90caf9
-}
+  .panel{display:none;padding:8px 4px}
+  .panel2{display:none;padding:8px 4px}
 
-input,textarea,select{
-  width:100%;
-  padding:8px;
-  border-radius:8px;
-  border:none;
-  margin-top:5px;
-  margin-bottom:10px;
-  font-size:14px;
-  background:#0b1c2d;
-  color:#fff
-}
+  .menu{border-bottom:1px dashed #355c7d;padding-bottom:10px;margin-bottom:10px;font-size:13px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
 
-input::placeholder,
-textarea::placeholder{
-  color:#90a4ae
-}
+  button{background:#64b5f6;border:none;padding:4px 9px;border-radius:6px;cursor:pointer;font-size:14px;color:#0b1c2d;font-weight:bold}
+  button:hover{background:#90caf9}
+  .qty{margin:0 6px;color:#ffd166;font-weight:bold}
 
-.category{
-  background:linear-gradient(135deg,#1e88e5,#42a5f5);
-  color:#fff;
-  padding:10px;
-  border-radius:10px;
-  margin-top:10px;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:14px;
-  box-shadow:0 3px 8px rgba(0,0,0,.3)
-}
+  .total-box{text-align:center;font-size:18px;font-weight:bold;color:#ffd166;margin-top:10px;background:linear-gradient(135deg,#13293d,#0b1c2d)}
+  .send{width:100%;padding:12px;font-size:15px;background:linear-gradient(135deg,#1e88e5,#64b5f6);border:none;border-radius:10px;color:#fff;font-weight:bold}
+  .send:hover{opacity:.9}
 
-.panel{
-  display:none;
-  padding:8px
-}
-
-.menu{
-  border-bottom:1px dashed #355c7d;
-  padding-bottom:8px;
-  margin-bottom:8px;
-  font-size:13px
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:6px
-}
-
-button{
-  background:#64b5f6;
-  border:none;
-  padding:4px 9px;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:14px;
-  color:#0b1c2d;
-  font-weight:bold
-}
-
-button:hover{
-  background:#90caf9
-}
-
-.qty{
-  margin:0 6px;
-  color:#ffd166;
-  font-weight:bold
-}
-
-.total-box{
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
-  color:#ffd166;
-  margin-top:10px;
-  background:linear-gradient(135deg,#13293d,#0b1c2d)
-}
-
-.send{
-  width:100%;
-  padding:12px;
-  font-size:15px;
-  background:linear-gradient(135deg,#1e88e5,#64b5f6);
-  border:none;
-  border-radius:10px;
-  color:#fff;
-  font-weight:bold
-}
-
-.send:hover{
-  opacity:.9
-}
+  .muted{font-size:12px;color:#9fb3c8;margin-top:-6px;margin-bottom:10px}
 </style>
 </head>
 
@@ -140,194 +58,401 @@ button:hover{
 <h2>Reservasi & Order Menu</h2>
 
 <div class="box">
-<label>Nama Pembeli</label>
-<input id="nama" placeholder="Nama lengkap">
+  <label>Nama Pembeli</label>
+  <input id="nama" placeholder="Nama lengkap" />
 
-<label>Tanggal Reservasi</label>
-<input type="date" id="tanggal">
+  <label>Tanggal Reservasi</label>
+  <input type="date" id="tanggal" />
 
-<label>Jam Reservasi</label>
-<input type="time" id="jam">
+  <label>Jam Reservasi</label>
+  <input type="time" id="jam" />
 
-<label>Event</label>
-<input id="eventName" placeholder="Contoh: Birthday Party">
+  <label>Event</label>
+  <input id="eventName" placeholder="Contoh: Birthday Party" />
 
-<label>Lokasi</label>
-<select id="lokasi">
-<option value="">Pilih Lokasi</option>
-<option>Indoor</option>
-<option>Outdoor</option>
-</select>
+  <label>Lokasi</label>
+  <select id="lokasi">
+    <option value="">Pilih Lokasi</option>
+    <option>Indoor</option>
+    <option>Outdoor</option>
+  </select>
 
-<label>Jumlah Pax</label>
-<input type="number" id="pax" min="1" placeholder="Jumlah orang">
+  <label>Jumlah Pax</label>
+  <input type="number" id="pax" min="1" placeholder="Jumlah orang" />
 </div>
 
 <div class="box" id="menu"></div>
 
 <div class="box total-box">
-TOTAL PESANAN<br>
-Rp <span id="total">0</span>
+  TOTAL PESANAN<br />
+  Rp <span id="total">0</span>
 </div>
 
 <div class="box">
-<label>Catatan Umum</label>
-<textarea id="note" placeholder="Catatan tambahan..."></textarea>
-<button class="send" onclick="sendWA()">Kirim ke WhatsApp</button>
+  <label>Catatan Umum</label>
+  <textarea id="note" placeholder="Catatan tambahan..."></textarea>
+  <button class="send" type="button" onclick="sendWA()">Kirim ke WhatsApp</button>
+  <div class="muted">Pesan akan otomatis dibuka ke WhatsApp dengan format rapi.</div>
 </div>
 
 <script>
-const data={
-"MAGICAL PASTA":{
-"Carbonara":25000,
-"Garlic Butter Cheese":20000,
-"Bolognese":20000
-},
-"MAGICAL MENU":{
-"Caesar Salad":25000,
-"Wan Pixie Sandwich":20000,
-"Fairy Sweet Fruit Mix":20000
-},
-"MAGICAL SMOOTHIES":{
-"Moon Berry Manggo Spell":25000,
-"Apple Peach Fairy Glow":25000,
-"Pink Pixie Delight":25000,
-"Echanted Choco Avocado":25000,
-"Additional Keju / Coklat":5000
-},
-"MAGICAL DRINK":{
-"Dreamy Kissies":18000,
-"Rainbow Paradise":18000,
-"Blue Lemonade":18000,
-"Butterfly Blooms":18000
-},
-"TEA SERIES":{
-"Jasmine Tea (HOT)":15000,
-"Jasmine Tea (ICE)":15000,
-"Chamomile Tea (HOT)":15000,
-"Chamomile Tea (ICE)":15000,
-"Butterfly Pea Tea (HOT)":15000,
-"Butterfly Pea Tea (ICE)":15000,
-"Peach Tea (HOT)":15000,
-"Peach Tea (ICE)":15000,
-"Lemon Tea (HOT)":15000,
-"Lemon Tea (ICE)":15000,
-"Lychee Tea (HOT)":15000,
-"Lychee Tea (ICE)":15000,
-"Thai Tea (HOT)":15000,
-"Thai Tea (ICE)":15000,
-"Green Thai Tea (HOT)":15000,
-"Green Thai Tea (ICE)":15000,
-"Tea Party (ONLY HOT)":50000
-},
-"CITA RASA NUSANTARA":{
-"Nasi Ayam Sambal Hijau":20000,
-"Nasi Ayam Tempong":25000,
-"Nasi Bakar":15000,
-"Sego Sambel":10000,
-"Nasi Tahu & Tempe Sambal Seger":10000
-},
-"SPECIAL FROM US":{
-"Indomie 06 Kuah":8000,
-"Indomie 06 Goreng":8000,
-"Indomie Special 06 Kuah":12000,
-"Indomie Special 06 Goreng":12000,
-"Indomie Super Hot Lv 1-5 Kuah":14000,
-"Indomie Super Hot Lv 1-5 Goreng":14000,
-"Indomie Super Hot Lv 6-10 Kuah":14000,
-"Indomie Super Hot Lv 6-10 Goreng":14000,
-"Indomie Goreng Sambal Matah":14000,
-"Indomie Goreng Chicken Blackpepper":15000,
-"06 Squash Drink":8000,
-"Banana Split 06":10000
-},
-"SPECIAL ICE":{
-"Es Tape Ketan Ireng":20000,
-"Mineral Water":5000,
-"Charge Take Away":1000
-}
+/* ========= DATA ========= */
+const data = {
+  "MAGICAL MENU": {
+    "MAGICAL PASTA": {
+      "Carbonara": { price: 25000, options: ["Fusilli","Penne","Makaroni"] },
+      "Garlic Butter Cheese": { price: 20000, options: ["Fusilli","Penne","Makaroni"] },
+      "Bolognese": { price: 20000, options: ["Fusilli","Penne","Makaroni"] }
+    },
+
+    "MAGICAL MENU MAIN": {
+      "Caesar Salad": 25000,
+      "Wan Pixie Sandwich": 20000,
+      "Fairy Sweet Fruit Mix": 20000
+    },
+
+    "MAGICAL SMOOTHIES": {
+      "Moon Berry Manggo Spell": 25000,
+      "Apple Peach Fairy Glow": 25000,
+      "Pink Pixie Delight": 25000,
+      "Echanted Choco Avocado": 25000,
+      "Additional Keju / Coklat": 5000
+    },
+
+    "MAGICAL DRINK": {
+      "Dreamy Kissies": 18000,
+      "Rainbow Paradise": 18000,
+      "Blue Lemonade": 18000,
+      "Butterfly Blooms": 18000
+    },
+
+    "MAGICAL TEA SERIES": {
+      "Jasmine Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Chamomile Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Butterfly Pea Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Peach Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Lemon Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Lychee Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Thai Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Green Thai Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Tea Party (ONLY HOT)": 50000
+    }
+  },
+
+  "MENU NUSANTARA": {
+    "CITA RASA NUSANTARA": {
+      "Nasi Ayam Sambal Hijau": 20000,
+      "Nasi Ayam Tempong": 25000,
+      "Nasi Bakar": 15000,
+      "Sego Sambel": 10000,
+      "Nasi Tahu & Tempe Sambal Seger": 10000
+    }
+  },
+
+  "SPECIAL FROM US": {
+    "SPECIAL 06": {
+      "Indomie 06 Kuah": 8000,
+      "Indomie 06 Goreng": 8000,
+      "Indomie Special 06 Kuah": 12000,
+      "Indomie Special 06 Goreng": 12000,
+
+      "Indomie SUPER HOT Kuah (Lvl 1-5)": { price: 14000, options: ["Lvl 1","Lvl 2","Lvl 3","Lvl 4","Lvl 5"] },
+      "Indomie SUPER HOT Goreng (Lvl 1-5)": { price: 14000, options: ["Lvl 1","Lvl 2","Lvl 3","Lvl 4","Lvl 5"] },
+
+      "Indomie SUPER HOT Kuah (Lvl 6-10)": { price: 14000, options: ["Lvl 6","Lvl 7","Lvl 8","Lvl 9","Lvl 10"] },
+      "Indomie SUPER HOT Goreng (Lvl 6-10)": { price: 14000, options: ["Lvl 6","Lvl 7","Lvl 8","Lvl 9","Lvl 10"] },
+
+      "Indomie Goreng Sambal Matah": 14000,
+      "Indomie Goreng Chicken Blackpaper": 15000,
+
+      "06 Squash Drink": 8000,
+      "Banana Split 06": 10000
+    }
+  },
+
+  "MAKANAN": {
+    "SPECIAL PARADISE": {
+      "Bakmi Goreng": 20000,
+      "Nasi Goreng Special": 25000,
+      "Nasi Ayam Geprek": 20000
+    },
+    "RICE BOWL": {
+      "Chicken Brown Sauce": 20000,
+      "Chicken Black Pepper": 25000,
+      "Chicken Sambal Matah": 20000
+    },
+    "STEAK": {
+      "Chicken Steak": 25000,
+      "Tender Beef Steak": 35000
+    }
+  },
+
+  "MINUMAN": {
+    "COFFEE": {
+      "Brewed Coffee (Kopi Hitam)": 10000,
+      "Americano": 15000,
+      "Long Black": 15000,
+      "Coffee Latte": 18000,
+      "Cappuccino": 18000,
+      "Flat White": 18000,
+      "Caramel Macchiato": 25000,
+      "Bon Bon / Sanger": 15000,
+      "Espresso Single Shot": 10000,
+      "Affogato Single Shot": 15000,
+      "Additional Shot": 5000
+    },
+    "COFFEE LATTE": {
+      "Choco Latte": 18000,
+      "Matcha Latte": 18000,
+      "Red Velvet Latte": 18000,
+      "Tiramisu Latte": 18000
+    },
+    "FRAPPE": {
+      "Chocolate Frappe": 20000,
+      "Matcha Frappe": 20000,
+      "Taro Oreo Frappe": 20000
+    },
+    "MILKSHAKE": {
+      "Chocolate Milk Shake": 18000,
+      "Oreo Milk Shake": 18000,
+      "Regal Oreo Milk Shake": 22000,
+      "Additional Boba": 3000
+    },
+    "YAKULT DRINK SERIES": {
+      "Lychee Yakult": 15000,
+      "Mango Yakult": 15000,
+      "Strawberry Yakult": 15000
+    }
+  },
+
+  "SNACK": {
+    "SNACK & BITES": {
+      "Puding": 5000,
+      "Beef Burger": 20000,
+      "French Fries": 15000,
+      "Jamur Crispy": 12000,
+      "Tahu Mercon": 12000
+    },
+    "BANANA KRESS / BAKAR": {
+      "Original": 10000,
+      "Chocolate": 12000,
+      "Chocolate Cheese": 15000
+    },
+    "TOAST BREAD": {
+      "Ovomaltine": 12000,
+      "Ovo - Cheese": 18000
+    },
+    "ROTI MARYAM": {
+      "Original": 8000,
+      "Chocolate Cheese": 15000
+    },
+    "BROWNIES PARADISE": {
+      "Choco Lava": 20000,
+      "Matcha Lava": 20000
+    }
+  },
+
+  "ADDITIONAL": {
+    "ADD ON": {
+      "Nasi Putih": 5000,
+      "Sambal": 4000,
+      "Sauce Steak": 5000,
+      "Telur": 5000,
+      "Take Away Charge": 5000
+    }
+  }
 };
 
-let cart={},total=0;
+/* ========= CART ========= */
+let cart = {}; // { [id]: { name, q, p, id } }
+let total = 0;
+
+function formatRp(n){ return Number(n || 0).toLocaleString("id-ID"); }
+
+function getItemPrice(val){
+  if (typeof val === "number") return val;
+  if (val && typeof val === "object" && typeof val.price === "number") return val.price;
+  return 0;
+}
 
 function updateTotal(){
-document.getElementById("total").innerText=total.toLocaleString();
+  document.getElementById("total").innerText = formatRp(total);
 }
 
+/* ========= RENDER: kategori -> subkategori -> menu ========= */
 function render(){
-let html="",i=0;
-for(let c in data){
-html+=`<div class="category" onclick="toggle(${i})">${c}</div>
-<div class="panel" id="p${i}">`;
-for(let m in data[c]){
-let id=m.replace(/[^a-z0-9]/gi,'_');
-html+=`
-<div class="menu">
-<div class="row">
-<span>${m}<br>Rp ${data[c][m].toLocaleString()}</span>
-<div>
-<button onclick="add('${m}',${data[c][m]},'${id}')">+</button>
-<span class="qty" id="q_${id}">0</span>
-<button onclick="remove('${m}',${data[c][m]},'${id}')">-</button>
-</div>
-</div>
-<textarea id="n_${id}" placeholder="Catatan menu ini..."></textarea>
-</div>`;
-}
-html+=`</div>`;
-i++;
-}
-menu.innerHTML=html;
+  const menuEl = document.getElementById("menu");
+  let html = "";
+  let catIndex = 0;
+
+  for (const category in data){
+    html += `
+      <div class="acc" onclick="toggleCat(${catIndex})">
+        <span>${category}</span>
+        <small>Click</small>
+      </div>
+      <div class="panel" id="cat_${catIndex}">
+    `;
+
+    const subcats = data[category];
+    let subIndex = 0;
+
+    for (const subcat in subcats){
+      html += `
+        <div class="acc2" onclick="toggleSub(${catIndex}, ${subIndex})">
+          <span>${subcat}</span>
+          <small>Click</small>
+        </div>
+        <div class="panel2" id="sub_${catIndex}_${subIndex}">
+      `;
+
+      const items = subcats[subcat];
+      for (const itemName in items){
+        const itemVal = items[itemName];
+        const price = getItemPrice(itemVal);
+
+        // id unik
+        const id = (category + "_" + subcat + "_" + itemName).replace(/[^a-z0-9]/gi,'_');
+
+        // options dropdown (kalau ada)
+        let optHtml = "";
+        if (itemVal && typeof itemVal === "object" && Array.isArray(itemVal.options) && itemVal.options.length){
+          const opts = itemVal.options.map(o => `<option value="${o}">${o}</option>`).join("");
+          optHtml = `
+            <label style="font-size:12px;color:#90caf9">Varian</label>
+            <select id="o_${id}">
+              <option value="">Pilih varian</option>
+              ${opts}
+            </select>
+          `;
+        }
+
+        // escape untuk onclick
+        const safeName = String(itemName).replace(/'/g,"\\'");
+
+        html += `
+          <div class="menu">
+            <div class="row">
+              <span>${itemName}<br>Rp ${formatRp(price)}</span>
+              <div>
+                <button type="button" onclick="add('${safeName}', ${price}, '${id}')">+</button>
+                <span class="qty" id="q_${id}">0</span>
+                <button type="button" onclick="remove('${safeName}', ${price}, '${id}')">-</button>
+              </div>
+            </div>
+            ${optHtml}
+            <textarea id="n_${id}" placeholder="Catatan menu ini..."></textarea>
+          </div>
+        `;
+      }
+
+      html += `</div>`; // panel2
+      subIndex++;
+    }
+
+    html += `</div>`; // panel kategori
+    catIndex++;
+  }
+
+  menuEl.innerHTML = html;
 }
 render();
 
-function toggle(i){
-document.querySelectorAll(".panel").forEach((p,x)=>{
-p.style.display=(x===i && p.style.display!=="block")?"block":"none";
-});
+/* ========= TOGGLES =========
+   - klik kategori: buka/tutup panel kategori, tutup kategori lain
+   - klik subkategori: buka/tutup sub panel, tutup sub lain dalam kategori tsb
+*/
+function toggleCat(catIndex){
+  const cats = document.querySelectorAll(".panel");
+  cats.forEach((p, idx) => {
+    if (idx === catIndex){
+      p.style.display = (p.style.display === "block") ? "none" : "block";
+    } else {
+      p.style.display = "none";
+    }
+  });
+
+  // saat ganti kategori, tutup semua subpanel
+  document.querySelectorAll(".panel2").forEach(p => p.style.display = "none");
 }
 
-function add(n,p,id){
-if(!cart[n])cart[n]={q:0,p,id};
-cart[n].q++; total+=p;
-document.getElementById("q_"+id).innerText=cart[n].q;
-updateTotal();
+function toggleSub(catIndex, subIndex){
+  const container = document.getElementById("cat_" + catIndex);
+  if (!container || container.style.display !== "block") return;
+
+  // tutup sub lain dalam kategori yg sama
+  container.querySelectorAll(".panel2").forEach((p, idx) => {
+    const targetId = `sub_${catIndex}_${subIndex}`;
+    if (p.id === targetId){
+      p.style.display = (p.style.display === "block") ? "none" : "block";
+    } else {
+      p.style.display = "none";
+    }
+  });
 }
 
-function remove(n,p,id){
-if(cart[n] && cart[n].q>0){
-cart[n].q--; total-=p;
-document.getElementById("q_"+id).innerText=cart[n].q;
-updateTotal();
-}
+/* ========= CART OPS ========= */
+function add(name, price, id){
+  if (!cart[id]) cart[id] = { name, q: 0, p: price, id };
+  cart[id].q++;
+  total += price;
+  document.getElementById("q_" + id).innerText = cart[id].q;
+  updateTotal();
 }
 
+function remove(name, price, id){
+  if (cart[id] && cart[id].q > 0){
+    cart[id].q--;
+    total -= price;
+    document.getElementById("q_" + id).innerText = cart[id].q;
+    updateTotal();
+  }
+}
+
+/* ========= WA ========= */
 function sendWA(){
-if(!nama.value||!tanggal.value||!jam.value||!eventName.value||!lokasi.value||!pax.value){
-alert("Lengkapi data reservasi");
-return;
-}
+  const nama = document.getElementById("nama");
+  const tanggal = document.getElementById("tanggal");
+  const jam = document.getElementById("jam");
+  const eventName = document.getElementById("eventName");
+  const lokasi = document.getElementById("lokasi");
+  const pax = document.getElementById("pax");
+  const note = document.getElementById("note");
 
-let t=`RESERVASI ZERO SIX SKY LOUNGE%0A%0A`;
-t+=`Nama: ${nama.value}%0A`;
-t+=`Tanggal: ${tanggal.value}%0A`;
-t+=`Jam: ${jam.value}%0A`;
-t+=`Event: ${eventName.value}%0A`;
-t+=`Lokasi: ${lokasi.value}%0A`;
-t+=`Pax: ${pax.value}%0A%0A`;
+  if(!nama.value || !tanggal.value || !jam.value || !eventName.value || !lokasi.value || !pax.value){
+    alert("Lengkapi data reservasi");
+    return;
+  }
 
-let i=1;
-for(let k in cart){
-if(cart[k].q>0){
-let n=document.getElementById("n_"+cart[k].id).value;
-t+=`${i}. ${k} x${cart[k].q} = Rp ${cart[k].q*cart[k].p}%0A`;
-if(n)t+=`   Catatan: ${n}%0A`;
-i++;
-}}
-if(note.value)t+=`%0ACatatan Umum:%0A${note.value}`;
-t+=`%0A%0ATOTAL: Rp ${total.toLocaleString()}`;
+  let t = `RESERVASI ZERO SIX SKY LOUNGE\n\n`;
+  t += `Nama: ${nama.value}\n`;
+  t += `Tanggal: ${tanggal.value}\n`;
+  t += `Jam: ${jam.value}\n`;
+  t += `Event: ${eventName.value}\n`;
+  t += `Lokasi: ${lokasi.value}\n`;
+  t += `Pax: ${pax.value}\n\n`;
 
-window.open(`https://wa.me/6285175313330?text=${t}`);
+  let i = 1;
+  for (const id in cart){
+    const it = cart[id];
+    if (it.q > 0){
+      const catatan = document.getElementById("n_" + it.id)?.value || "";
+      const opsi = document.getElementById("o_" + it.id)?.value || "";
+      const lineTotal = it.q * it.p;
+
+      t += `${i}. ${it.name}${opsi ? ` (${opsi})` : ""} x${it.q} = Rp ${formatRp(lineTotal)}\n`;
+      if (catatan) t += `   Catatan: ${catatan}\n`;
+      i++;
+    }
+  }
+
+  if (note.value){
+    t += `\nCatatan Umum:\n${note.value}\n`;
+  }
+
+  t += `\nTOTAL: Rp ${formatRp(total)}`;
+
+  window.open(`https://wa.me/6285175313330?text=${encodeURIComponent(t)}`);
 }
 </script>
 
