@@ -19,6 +19,11 @@
   }
   input::placeholder, textarea::placeholder{color:#90a4ae}
 
+  /* Search row */
+  .search-row{display:flex;gap:8px;align-items:center}
+  .search-row input{margin-bottom:0}
+  .search-btn{padding:8px 12px;border-radius:8px}
+
   /* Accordion header */
   .acc{
     background:linear-gradient(135deg,#1e88e5,#42a5f5);
@@ -49,6 +54,25 @@
   .send:hover{opacity:.9}
 
   .muted{font-size:12px;color:#9fb3c8;margin-top:-6px;margin-bottom:10px}
+
+  .search-title{
+    margin-top:10px;
+    padding:10px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#224a6a,#1b3550);
+    color:#eaf4ff;
+    font-weight:bold;
+    font-size:13px;
+  }
+  .empty{
+    padding:12px;
+    border-radius:10px;
+    background:#0b1c2d;
+    border:1px dashed #355c7d;
+    color:#cfd8dc;
+    margin-top:10px;
+    font-size:13px;
+  }
 </style>
 </head>
 
@@ -79,6 +103,16 @@
 
   <label>Jumlah Pax</label>
   <input type="number" id="pax" min="1" placeholder="Jumlah orang" />
+
+  <!-- SEARCH BAR (sebelum menu) -->
+  <label>Cari Menu</label>
+  <div class="search-row">
+    <input id="search" placeholder="Ketik nama menu... (contoh: latte, indomie, steak)" />
+    <button type="button" class="search-btn" onclick="applySearch()">Search</button>
+  </div>
+  <div class="muted" style="margin-top:6px">
+    Tips: tekan Enter untuk cari. Kosongkan untuk tampilkan semua.
+  </div>
 </div>
 
 <div class="box" id="menu"></div>
@@ -100,12 +134,20 @@
 const data = {
   "MAGICAL MENU": {
     "MAGICAL PASTA": {
-      "Carbonara": { price: 25000, options: ["Fusilli","Penne","Makaroni"] },
-      "Garlic Butter Cheese": { price: 20000, options: ["Fusilli","Penne","Makaroni"] },
-      "Bolognese": { price: 20000, options: ["Fusilli","Penne","Makaroni"] }
+      "Carbonara Fusilli": 25000,
+      "Carbonara Penne": 25000,
+      "Carbonara Makaroni": 25000,
+
+      "Garlic Butter Cheese Fusilli": 20000,
+      "Garlic Butter Cheese Penne": 20000,
+      "Garlic Butter Cheese makaroni": 20000,
+
+      "Bolognese Fusilli": 20000,
+      "Bolognese Penne": 20000,
+      "Bolognese Makaroni": 20000
     },
 
-    "MAGICAL MENU MAIN": {
+    "MAGICAL MENU": {
       "Caesar Salad": 25000,
       "Wan Pixie Sandwich": 20000,
       "Fairy Sweet Fruit Mix": 20000
@@ -127,14 +169,22 @@ const data = {
     },
 
     "MAGICAL TEA SERIES": {
-      "Jasmine Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Chamomile Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Butterfly Pea Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Peach Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Lemon Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Lychee Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Thai Tea": { price: 15000, options: ["HOT","ICE"] },
-      "Green Thai Tea": { price: 15000, options: ["HOT","ICE"] },
+      "Jasmine Tea HOT":  { price: 15000 },
+      "Jasmine Tea ICE":  { price: 15000 },
+      "Chamomile Tea HOT":  { price: 15000 },
+      "Chamomile Tea ICE":  { price: 15000 },
+      "Butterfly Pea Tea HOT": { price: 15000 },
+      "Butterfly Pea Tea ICE": { price: 15000 },
+      "Peach Tea HOT": { price: 15000 },
+      "Peach Tea ICE": { price: 15000 },
+      "Lemon Tea HOT":  { price: 15000 },
+      "Lemon Tea ICE":  { price: 15000 },
+      "Lychee Tea HOT": { price: 15000 },
+      "Lychee Tea ICE": { price: 15000 },
+      "Thai Tea HOT": { price: 15000 },
+      "Thai Tea ICE": { price: 15000 },
+      "Green Thai Tea HOT": { price: 15000 },
+      "Green Thai Tea ICE": { price: 15000 },
       "Tea Party (ONLY HOT)": 50000
     }
   },
@@ -187,13 +237,34 @@ const data = {
     }
   },
 
-  "MINUMAN": {
-    "COFFEE": {
+  "MINUMAN 06": {
+    "MINUMAN": {
+      "Jahe HOT": 15000,
+      "Jahe ICE": 15000,
+      "Choco HOT": 15000,
+      "Choco ICE": 15000,
+      "Millo HOT": 10000,
+      "Millo ICE": 10000,
+      "Pure Orange Juice HOT": 12000,
+      "Pure Orange Juice ICE": 12000,
+      "Ice Coffe Matcha": 18000,
+      "Mojito": 15000,
+      "Soda Gembira": 20000,
+      "Soda Lychee": 20000,
+      "Brown Sugar Boba Fresh Milk": 18000,
+      "Brown Sugar Boba Milk Tea": 18000,
+      "Ice Cream": 12000
+    },
+    "COFFEE TIME": {
       "Brewed Coffee (Kopi Hitam)": 10000,
-      "Americano": 15000,
-      "Long Black": 15000,
-      "Coffee Latte": 18000,
-      "Cappuccino": 18000,
+      "Americano HOT": 15000,
+      "Americano ICE": 15000,
+      "Long Black HOT": 15000,
+      "Long Black ICE": 15000,
+      "Coffee Latte HOT": 18000,
+      "Coffee Latte ICE": 18000,
+      "Cappuccino HOT": 18000,
+      "Cappuccino ICE": 18000,
       "Flat White": 18000,
       "Caramel Macchiato": 25000,
       "Bon Bon / Sanger": 15000,
@@ -201,20 +272,33 @@ const data = {
       "Affogato Single Shot": 15000,
       "Additional Shot": 5000
     },
-    "COFFEE LATTE": {
-      "Choco Latte": 18000,
-      "Matcha Latte": 18000,
-      "Red Velvet Latte": 18000,
-      "Tiramisu Latte": 18000
+    "LATTE": {
+      "Choco Latte HOT": 18000,
+      "Choco Latte ICE": 18000,
+      "Choco Matcha Latte HOT": 18000,
+      "Choco Matcha Latte ICE": 18000,
+      "Hazelnut Latte HOT": 18000,
+      "Hazelnut Latte ICE": 18000,
+      "Matcha Latte HOT": 18000,
+      "Matcha Latte ICE": 18000,
+      "Red Velvet Latte HOT": 18000,
+      "Red Velvet Latte ICE": 18000,
+      "Tiramisu Latte HOT": 18000,
+      "Tiramisu Latte ICE": 18000
     },
     "FRAPPE": {
       "Chocolate Frappe": 20000,
+      "Hazelnut Frappe": 20000,
       "Matcha Frappe": 20000,
+      "Taro Frappe": 20000,
       "Taro Oreo Frappe": 20000
     },
     "MILKSHAKE": {
       "Chocolate Milk Shake": 18000,
+      "Strawberry Milk Shake": 18000,
+      "Vanilla Milk Shake": 18000,
       "Oreo Milk Shake": 18000,
+      "Regal Milk Shake": 18000,
       "Regal Oreo Milk Shake": 22000,
       "Additional Boba": 3000
     },
@@ -222,6 +306,10 @@ const data = {
       "Lychee Yakult": 15000,
       "Mango Yakult": 15000,
       "Strawberry Yakult": 15000
+    },
+    "SPECIAL ICE": {
+      "Es Tape Ketan Ireng": 20000,
+      "Mineral Water": 5000
     }
   },
 
@@ -229,26 +317,45 @@ const data = {
     "SNACK & BITES": {
       "Puding": 5000,
       "Beef Burger": 20000,
+      "Chicken Burger": 15000,
+      "Chicken Lolipop": 18000,
       "French Fries": 15000,
+      "Potato Wedges": 15000,
       "Jamur Crispy": 12000,
+      "Onion Ring": 15000,
+      "Kebab 06": 12000,
+      "Martabak Mini": 12000,
+      "Lumpia Rebung": 12000,
+      "Sosis Solo": 12000,
+      "Tahu Crispy": 10000,
       "Tahu Mercon": 12000
     },
     "BANANA KRESS / BAKAR": {
-      "Original": 10000,
-      "Chocolate": 12000,
-      "Chocolate Cheese": 15000
+      "Original KRESS": 10000,
+      "Original BAKAR": 10000,
+      "Chocolate KRESS": 12000,
+      "Chocolate BAKAR": 12000,
+      "Chese KRESS": 12000,
+      "Chese BAKAR": 12000,
+      "Chocolate Cheese KRESS": 15000,
+      "Chocolate Cheese BAKAR": 15000
     },
     "TOAST BREAD": {
       "Ovomaltine": 12000,
+      "Keju Gondrong": 15000,
       "Ovo - Cheese": 18000
     },
     "ROTI MARYAM": {
       "Original": 8000,
+      "Chocolate": 10000,
+      "Chese": 12000,
       "Chocolate Cheese": 15000
     },
     "BROWNIES PARADISE": {
       "Choco Lava": 20000,
-      "Matcha Lava": 20000
+      "Matcha Lava": 20000,
+      "Strawberry Lava": 20000,
+      "Vanilla Lava": 20000
     }
   },
 
@@ -279,10 +386,110 @@ function updateTotal(){
   document.getElementById("total").innerText = formatRp(total);
 }
 
-/* ========= RENDER: kategori -> subkategori -> menu ========= */
+/* ========= SEARCH ========= */
+let searchQuery = "";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const s = document.getElementById("search");
+  if (s){
+    // realtime
+    s.addEventListener("input", () => applySearch(true));
+
+    // enter
+    s.addEventListener("keydown", (e) => {
+      if (e.key === "Enter"){
+        e.preventDefault();
+        applySearch();
+      }
+    });
+  }
+});
+
+function applySearch(isLive){
+  const s = document.getElementById("search");
+  searchQuery = (s?.value || "").trim().toLowerCase();
+  render();
+}
+
+/* ========= RENDER HELPERS ========= */
+function makeId(category, subcat, itemName){
+  return (category + "_" + subcat + "_" + itemName).replace(/[^a-z0-9]/gi,'_');
+}
+function safeText(s){
+  return String(s).replace(/'/g,"\\'");
+}
+
+function renderItem(category, subcat, itemName, itemVal){
+  const price = getItemPrice(itemVal);
+  const id = makeId(category, subcat, itemName);
+  const safeName = safeText(itemName);
+
+  // options dropdown (kalau ada)
+  let optHtml = "";
+  if (itemVal && typeof itemVal === "object" && Array.isArray(itemVal.options) && itemVal.options.length){
+    const opts = itemVal.options.map(o => `<option value="${o}">${o}</option>`).join("");
+    optHtml = `
+      <label style="font-size:12px;color:#90caf9">Varian</label>
+      <select id="o_${id}">
+        <option value="">Pilih varian</option>
+        ${opts}
+      </select>
+    `;
+  }
+
+  return `
+    <div class="menu">
+      <div class="row">
+        <span>${itemName}<br>Rp ${formatRp(price)}</span>
+        <div>
+          <button type="button" onclick="add('${safeName}', ${price}, '${id}')">+</button>
+          <span class="qty" id="q_${id}">${cart[id]?.q || 0}</span>
+          <button type="button" onclick="remove('${safeName}', ${price}, '${id}')">-</button>
+        </div>
+      </div>
+      ${optHtml}
+      <textarea id="n_${id}" placeholder="Catatan menu ini..."></textarea>
+    </div>
+  `;
+}
+
+/* ========= RENDER MAIN =========
+   - Jika searchQuery aktif: tampilkan "Hasil Pencarian" (tanpa accordion) agar terlihat
+   - Jika kosong: tampilkan accordion normal
+*/
 function render(){
   const menuEl = document.getElementById("menu");
   let html = "";
+
+  // MODE: SEARCH RESULT
+  if (searchQuery){
+    html += `<div class="search-title">Hasil Pencarian: "${searchQuery}"</div>`;
+
+    let found = 0;
+
+    for (const category in data){
+      const subcats = data[category];
+      for (const subcat in subcats){
+        const items = subcats[subcat];
+        for (const itemName in items){
+          const hay = (category + " " + subcat + " " + itemName).toLowerCase();
+          if (!hay.includes(searchQuery)) continue;
+
+          found++;
+          html += renderItem(category, subcat, itemName, items[itemName]);
+        }
+      }
+    }
+
+    if (found === 0){
+      html += `<div class="empty">Tidak ada menu yang cocok. Coba kata lain (contoh: "latte", "ayam", "indomie").</div>`;
+    }
+
+    menuEl.innerHTML = html;
+    return;
+  }
+
+  // MODE: NORMAL ACCORDION
   let catIndex = 0;
 
   for (const category in data){
@@ -307,43 +514,9 @@ function render(){
       `;
 
       const items = subcats[subcat];
+
       for (const itemName in items){
-        const itemVal = items[itemName];
-        const price = getItemPrice(itemVal);
-
-        // id unik
-        const id = (category + "_" + subcat + "_" + itemName).replace(/[^a-z0-9]/gi,'_');
-
-        // options dropdown (kalau ada)
-        let optHtml = "";
-        if (itemVal && typeof itemVal === "object" && Array.isArray(itemVal.options) && itemVal.options.length){
-          const opts = itemVal.options.map(o => `<option value="${o}">${o}</option>`).join("");
-          optHtml = `
-            <label style="font-size:12px;color:#90caf9">Varian</label>
-            <select id="o_${id}">
-              <option value="">Pilih varian</option>
-              ${opts}
-            </select>
-          `;
-        }
-
-        // escape untuk onclick
-        const safeName = String(itemName).replace(/'/g,"\\'");
-
-        html += `
-          <div class="menu">
-            <div class="row">
-              <span>${itemName}<br>Rp ${formatRp(price)}</span>
-              <div>
-                <button type="button" onclick="add('${safeName}', ${price}, '${id}')">+</button>
-                <span class="qty" id="q_${id}">0</span>
-                <button type="button" onclick="remove('${safeName}', ${price}, '${id}')">-</button>
-              </div>
-            </div>
-            ${optHtml}
-            <textarea id="n_${id}" placeholder="Catatan menu ini..."></textarea>
-          </div>
-        `;
+        html += renderItem(category, subcat, itemName, items[itemName]);
       }
 
       html += `</div>`; // panel2
@@ -358,10 +531,7 @@ function render(){
 }
 render();
 
-/* ========= TOGGLES =========
-   - klik kategori: buka/tutup panel kategori, tutup kategori lain
-   - klik subkategori: buka/tutup sub panel, tutup sub lain dalam kategori tsb
-*/
+/* ========= TOGGLES ========= */
 function toggleCat(catIndex){
   const cats = document.querySelectorAll(".panel");
   cats.forEach((p, idx) => {
@@ -380,8 +550,7 @@ function toggleSub(catIndex, subIndex){
   const container = document.getElementById("cat_" + catIndex);
   if (!container || container.style.display !== "block") return;
 
-  // tutup sub lain dalam kategori yg sama
-  container.querySelectorAll(".panel2").forEach((p, idx) => {
+  container.querySelectorAll(".panel2").forEach((p) => {
     const targetId = `sub_${catIndex}_${subIndex}`;
     if (p.id === targetId){
       p.style.display = (p.style.display === "block") ? "none" : "block";
@@ -396,7 +565,10 @@ function add(name, price, id){
   if (!cart[id]) cart[id] = { name, q: 0, p: price, id };
   cart[id].q++;
   total += price;
-  document.getElementById("q_" + id).innerText = cart[id].q;
+
+  const qEl = document.getElementById("q_" + id);
+  if (qEl) qEl.innerText = cart[id].q;
+
   updateTotal();
 }
 
@@ -404,7 +576,10 @@ function remove(name, price, id){
   if (cart[id] && cart[id].q > 0){
     cart[id].q--;
     total -= price;
-    document.getElementById("q_" + id).innerText = cart[id].q;
+
+    const qEl = document.getElementById("q_" + id);
+    if (qEl) qEl.innerText = cart[id].q;
+
     updateTotal();
   }
 }
@@ -458,3 +633,4 @@ function sendWA(){
 
 </body>
 </html>
+\
