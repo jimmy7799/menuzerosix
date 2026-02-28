@@ -6,70 +6,188 @@
 <title>ZERO SIX SKY LOUNGE - ORDER</title>
 
 <style>
-  body{font-family:Arial;background:#0b1c2d;color:#fff;padding:12px}
-  h1{font-size:20px;text-align:center;color:#64b5f6}
-  h2{font-size:14px;text-align:center;margin-bottom:15px;color:#cfd8dc}
+  :root{
+    --bg: #0b2f40;
+    --panel: #0f3b52;
+    --panel2: #0a2633;
 
-  .box{background:#13293d;padding:12px;border-radius:12px;margin-bottom:12px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
-  label{font-size:13px;color:#90caf9}
+    --text: #f6f1e6;
+    --muted: #c9c2b6;
+
+    --accent: #50a9a7;     /* teal */
+    --gold: #f0bb3f;       /* main gold */
+    --sand: #dca364;       /* soft gold */
+    --bronze: #bb5e20;     /* hover / deep accent */
+
+    --stroke: rgba(240,187,63,.35);
+    --shadow: 0 10px 24px rgba(0,0,0,.35);
+  }
+
+  body{
+    font-family:Arial;
+    background: radial-gradient(1200px 500px at 50% -10%, rgba(240,187,63,.18), transparent 60%),
+                radial-gradient(900px 450px at 100% 0%, rgba(80,169,167,.18), transparent 55%),
+                var(--bg);
+    color:var(--text);
+    padding:12px
+  }
+
+  h1{
+    font-size:20px;
+    text-align:center;
+    color:var(--gold);
+    letter-spacing:.6px;
+    text-shadow: 0 0 18px rgba(240,187,63,.25);
+  }
+  h2{
+    font-size:14px;
+    text-align:center;
+    margin-bottom:15px;
+    color:var(--muted);
+    opacity:.95;
+  }
+
+  .box{
+    background: linear-gradient(180deg, rgba(15,59,82,.92), rgba(10,38,51,.92));
+    padding:12px;
+    border-radius:14px;
+    margin-bottom:12px;
+    box-shadow: var(--shadow);
+    border:1px solid rgba(240,187,63,.18);
+    backdrop-filter: blur(2px);
+  }
+
+  label{font-size:13px;color:rgba(240,187,63,.92)}
 
   input,textarea,select{
-    width:100%;padding:8px;border-radius:8px;border:none;margin-top:5px;margin-bottom:10px;
-    font-size:14px;background:#0b1c2d;color:#fff
+    width:100%;
+    padding:9px 10px;
+    border-radius:10px;
+    border:1px solid rgba(80,169,167,.25);
+    margin-top:6px;
+    margin-bottom:10px;
+    font-size:14px;
+    background: rgba(11,47,64,.55);
+    color:var(--text);
+    outline:none;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
   }
-  input::placeholder, textarea::placeholder{color:#90a4ae}
+  input:focus, textarea:focus, select:focus{
+    border-color: rgba(240,187,63,.65);
+    box-shadow: 0 0 0 3px rgba(240,187,63,.12);
+  }
+  input::placeholder, textarea::placeholder{color:rgba(201,194,182,.72)}
 
   /* Search row */
   .search-row{display:flex;gap:8px;align-items:center}
   .search-row input{margin-bottom:0}
-  .search-btn{padding:8px 12px;border-radius:8px}
+  .search-btn{padding:9px 12px;border-radius:10px}
 
   /* Accordion header */
   .acc{
-    background:linear-gradient(135deg,#1e88e5,#42a5f5);
-    color:#fff;padding:10px;border-radius:10px;margin-top:10px;
-    cursor:pointer;font-weight:bold;font-size:14px;box-shadow:0 3px 8px rgba(0,0,0,.3);
-    display:flex;justify-content:space-between;align-items:center
+    background: linear-gradient(135deg, rgba(240,187,63,.95), rgba(220,163,100,.9));
+    color:#2a1b08;
+    padding:10px 12px;
+    border-radius:12px;
+    margin-top:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.25);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border:1px solid rgba(0,0,0,.12);
   }
-  .acc small{opacity:.9;font-weight:normal}
+  .acc small{opacity:.75;font-weight:700}
+
   .acc2{
-    background:linear-gradient(135deg,#1b3550,#224a6a);
-    color:#eaf4ff;padding:10px;border-radius:10px;margin-top:8px;
-    cursor:pointer;font-weight:bold;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.25);
-    display:flex;justify-content:space-between;align-items:center
+    background: linear-gradient(135deg, rgba(80,169,167,.35), rgba(11,47,64,.55));
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:12px;
+    margin-top:8px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.22);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border:1px solid rgba(80,169,167,.18);
   }
+  .acc2 small{opacity:.85;font-weight:600;color:rgba(240,187,63,.9)}
 
   .panel{display:none;padding:8px 4px}
   .panel2{display:none;padding:8px 4px}
 
-  .menu{border-bottom:1px dashed #355c7d;padding-bottom:10px;margin-bottom:10px;font-size:13px}
+  .menu{
+    border-bottom:1px dashed rgba(240,187,63,.35);
+    padding-bottom:10px;
+    margin-bottom:10px;
+    font-size:13px
+  }
   .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
 
-  button{background:#64b5f6;border:none;padding:4px 9px;border-radius:6px;cursor:pointer;font-size:14px;color:#0b1c2d;font-weight:bold}
-  button:hover{background:#90caf9}
-  .qty{margin:0 6px;color:#ffd166;font-weight:bold}
+  button{
+    background: linear-gradient(135deg, rgba(240,187,63,.95), rgba(220,163,100,.92));
+    border:none;
+    padding:5px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    color:#2a1b08;
+    font-weight:800;
+    box-shadow: 0 8px 16px rgba(0,0,0,.18);
+  }
+  button:hover{
+    background: linear-gradient(135deg, rgba(187,94,32,.95), rgba(240,187,63,.95));
+    color:#1a0f05;
+  }
+  .qty{margin:0 6px;color:var(--gold);font-weight:900;text-shadow:0 0 12px rgba(240,187,63,.22)}
 
-  .total-box{text-align:center;font-size:18px;font-weight:bold;color:#ffd166;margin-top:10px;background:linear-gradient(135deg,#13293d,#0b1c2d)}
-  .send{width:100%;padding:12px;font-size:15px;background:linear-gradient(135deg,#1e88e5,#64b5f6);border:none;border-radius:10px;color:#fff;font-weight:bold}
-  .send:hover{opacity:.9}
+  .total-box{
+    text-align:center;
+    font-size:18px;
+    font-weight:900;
+    color:var(--gold);
+    margin-top:10px;
+    background: linear-gradient(135deg, rgba(10,38,51,.95), rgba(15,59,82,.95));
+    border:1px solid rgba(240,187,63,.25);
+  }
 
-  .muted{font-size:12px;color:#9fb3c8;margin-top:-6px;margin-bottom:10px}
+  .send{
+    width:100%;
+    padding:12px;
+    font-size:15px;
+    background: linear-gradient(135deg, rgba(187,94,32,.95), rgba(240,187,63,.95));
+    border:none;
+    border-radius:12px;
+    color:#1a0f05;
+    font-weight:900;
+    letter-spacing:.2px;
+  }
+  .send:hover{filter: brightness(1.03); transform: translateY(-1px)}
+  .send:active{transform: translateY(0px)}
+
+  .muted{font-size:12px;color:rgba(201,194,182,.8);margin-top:-6px;margin-bottom:10px}
 
   .search-title{
     margin-top:10px;
-    padding:10px;
-    border-radius:10px;
-    background:linear-gradient(135deg,#224a6a,#1b3550);
-    color:#eaf4ff;
-    font-weight:bold;
+    padding:10px 12px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(80,169,167,.22), rgba(11,47,64,.65));
+    color:var(--text);
+    font-weight:800;
     font-size:13px;
+    border:1px solid rgba(80,169,167,.22);
   }
   .empty{
     padding:12px;
-    border-radius:10px;
-    background:#0b1c2d;
-    border:1px dashed #355c7d;
-    color:#cfd8dc;
+    border-radius:12px;
+    background: rgba(11,47,64,.55);
+    border:1px dashed rgba(240,187,63,.35);
+    color:rgba(201,194,182,.9);
     margin-top:10px;
     font-size:13px;
   }
@@ -104,10 +222,10 @@
   <label>Jumlah Pax</label>
   <input type="number" id="pax" min="1" placeholder="Jumlah orang" />
 
-  <!-- SEARCH BAR (sebelum menu) -->
+  <!-- SEARCH BAR -->
   <label>Cari Menu</label>
   <div class="search-row">
-    <input id="search" placeholder="Ketik nama menu... (contoh: latte, indomie, steak)" />
+    <input id="search" placeholder="Ketik nama menu... (contoh: kebuli, jeddah, indomie, latte)" />
     <button type="button" class="search-btn" onclick="applySearch()">Search</button>
   </div>
   <div class="muted" style="margin-top:6px">
@@ -130,232 +248,62 @@
 </div>
 
 <script>
-/* ========= DATA ========= */
+/* ========= DATA (FULL MENU) ========= */
 const data = {
-  "MAGICAL MENU": {
-    "MAGICAL PASTA": {
-      "Carbonara Fusilli": 25000,
-      "Carbonara Penne": 25000,
-      "Carbonara Makaroni": 25000,
-
-      "Garlic Butter Cheese Fusilli": 20000,
-      "Garlic Butter Cheese Penne": 20000,
-      "Garlic Butter Cheese makaroni": 20000,
-
-      "Bolognese Fusilli": 20000,
-      "Bolognese Penne": 20000,
-      "Bolognese Makaroni": 20000
-    },
-
-    "MAGICAL MENU": {
-      "Caesar Salad": 25000,
-      "Wan Pixie Sandwich": 20000,
-      "Fairy Sweet Fruit Mix": 20000
-    },
-
-    "MAGICAL SMOOTHIES": {
-      "Moon Berry Manggo Spell": 25000,
-      "Apple Peach Fairy Glow": 25000,
-      "Pink Pixie Delight": 25000,
-      "Echanted Choco Avocado": 25000,
-      "Additional Keju / Coklat": 5000
-    },
-
-    "MAGICAL DRINK": {
-      "Dreamy Kissies": 18000,
-      "Rainbow Paradise": 18000,
-      "Blue Lemonade": 18000,
-      "Butterfly Blooms": 18000
-    },
-
-    "MAGICAL TEA SERIES": {
-      "Jasmine Tea HOT":  { price: 15000 },
-      "Jasmine Tea ICE":  { price: 15000 },
-      "Chamomile Tea HOT":  { price: 15000 },
-      "Chamomile Tea ICE":  { price: 15000 },
-      "Butterfly Pea Tea HOT": { price: 15000 },
-      "Butterfly Pea Tea ICE": { price: 15000 },
-      "Peach Tea HOT": { price: 15000 },
-      "Peach Tea ICE": { price: 15000 },
-      "Lemon Tea HOT":  { price: 15000 },
-      "Lemon Tea ICE":  { price: 15000 },
-      "Lychee Tea HOT": { price: 15000 },
-      "Lychee Tea ICE": { price: 15000 },
-      "Thai Tea HOT": { price: 15000 },
-      "Thai Tea ICE": { price: 15000 },
-      "Green Thai Tea HOT": { price: 15000 },
-      "Green Thai Tea ICE": { price: 15000 },
-      "Tea Party (ONLY HOT)": 50000
+  "ARABIAN NIGHT MENU": {
+    "REGULAR": {
+      "Nasi Kebuli": 30000
     }
   },
 
-  "MENU NUSANTARA": {
-    "CITA RASA NUSANTARA": {
+  "ARABIAN NIGHT MENU (HARIAN)": {
+    "SPECIAL SESUAI HARI": {
+      "Jeddah": { price: 35000, days: [1,2,3,4] },          // Senin–Kamis
+      "Shafah Marwah": { price: 35000, days: [2,3,4,5] },   // Selasa–Jumat
+      "Makkah": { price: 35000, days: [3,4,5,6] },          // Rabu–Sabtu
+      "Madinah": { price: 35000, days: [0] }                // Minggu
+    }
+  },
+
+  "SPECIAL PARADISE": {
+    "MENU": {
+      "Bakmi Goreng": 20000,
+      "Nasi Goreng Special": 25000,
+
+      "Indomie 06": { price: 8000, options: ["Kuah","Goreng"] },
+      "Indomie Special 06": { price: 12000, options: ["Kuah","Goreng"] },
+
+      "Indomie SUPER HOT Lvl 1–5": { price: 14000, options: ["Kuah","Goreng"] },
+      "Indomie SUPER HOT Lvl 6–10": { price: 14000, options: ["Kuah","Goreng"] },
+
+      "Indomie Goreng Sambal Matah": 14000,
+      "Indomie Goreng Chicken Black Pepper": 15000
+    }
+  },
+
+  "CITA RASA NUSANTARA": {
+    "MENU": {
       "Nasi Ayam Sambal Hijau": 20000,
       "Nasi Ayam Tempong": 25000,
       "Nasi Bakar": 15000,
       "Sego Sambel": 10000,
-      "Nasi Tahu & Tempe Sambal Seger": 10000
-    }
-  },
-
-  "SPECIAL FROM US": {
-    "SPECIAL 06": {
-      "Indomie 06 Kuah": 8000,
-      "Indomie 06 Goreng": 8000,
-      "Indomie Special 06 Kuah": 12000,
-      "Indomie Special 06 Goreng": 12000,
-
-      "Indomie SUPER HOT Kuah (Lvl 1-5)": { price: 14000, options: ["Lvl 1","Lvl 2","Lvl 3","Lvl 4","Lvl 5"] },
-      "Indomie SUPER HOT Goreng (Lvl 1-5)": { price: 14000, options: ["Lvl 1","Lvl 2","Lvl 3","Lvl 4","Lvl 5"] },
-
-      "Indomie SUPER HOT Kuah (Lvl 6-10)": { price: 14000, options: ["Lvl 6","Lvl 7","Lvl 8","Lvl 9","Lvl 10"] },
-      "Indomie SUPER HOT Goreng (Lvl 6-10)": { price: 14000, options: ["Lvl 6","Lvl 7","Lvl 8","Lvl 9","Lvl 10"] },
-
-      "Indomie Goreng Sambal Matah": 14000,
-      "Indomie Goreng Chicken Blackpaper": 15000,
-
-      "06 Squash Drink": 8000,
-      "Banana Split 06": 10000
-    }
-  },
-
-  "MAKANAN": {
-    "SPECIAL PARADISE": {
-      "Bakmi Goreng": 20000,
-      "Nasi Goreng Special": 25000,
+      "Nasi Tahu & Tempe Sambal Seger": 10000,
       "Nasi Ayam Geprek": 20000
-    },
-    "RICE BOWL": {
-      "Chicken Brown Sauce": 20000,
-      "Chicken Black Pepper": 25000,
-      "Chicken Sambal Matah": 20000
-    },
-    "STEAK": {
+    }
+  },
+
+  "CHEF'S SELECTION": {
+    "MENU": {
+      "Pasta Carbonara": { price: 25000, options: ["Fusili","Penne","Makaroni"] },
+      "Pasta Butter Cheese": { price: 20000, options: ["Fusili","Penne","Makaroni"] },
+      "Pasta Bolognese": { price: 20000, options: ["Fusili","Penne","Makaroni"] },
+
+      "Rice Bowl Chicken Brown Sauce": 20000,
+      "Rice Bowl Chicken Black Pepper": 25000,
+      "Rice Bowl Chicken Sambal Matah": 20000,
+
       "Chicken Steak": 25000,
       "Tender Beef Steak": 35000
-    }
-  },
-
-  "MINUMAN 06": {
-    "MINUMAN": {
-      "Jahe HOT": 15000,
-      "Jahe ICE": 15000,
-      "Choco HOT": 15000,
-      "Choco ICE": 15000,
-      "Millo HOT": 10000,
-      "Millo ICE": 10000,
-      "Pure Orange Juice HOT": 12000,
-      "Pure Orange Juice ICE": 12000,
-      "Ice Coffe Matcha": 18000,
-      "Mojito": 15000,
-      "Soda Gembira": 20000,
-      "Soda Lychee": 20000,
-      "Brown Sugar Boba Fresh Milk": 18000,
-      "Brown Sugar Boba Milk Tea": 18000,
-      "Ice Cream": 12000
-    },
-    "COFFEE TIME": {
-      "Brewed Coffee (Kopi Hitam)": 10000,
-      "Americano HOT": 15000,
-      "Americano ICE": 15000,
-      "Long Black HOT": 15000,
-      "Long Black ICE": 15000,
-      "Coffee Latte HOT": 18000,
-      "Coffee Latte ICE": 18000,
-      "Cappuccino HOT": 18000,
-      "Cappuccino ICE": 18000,
-      "Flat White": 18000,
-      "Caramel Macchiato": 25000,
-      "Bon Bon / Sanger": 15000,
-      "Espresso Single Shot": 10000,
-      "Affogato Single Shot": 15000,
-      "Additional Shot": 5000
-    },
-    "LATTE": {
-      "Choco Latte HOT": 18000,
-      "Choco Latte ICE": 18000,
-      "Choco Matcha Latte HOT": 18000,
-      "Choco Matcha Latte ICE": 18000,
-      "Hazelnut Latte HOT": 18000,
-      "Hazelnut Latte ICE": 18000,
-      "Matcha Latte HOT": 18000,
-      "Matcha Latte ICE": 18000,
-      "Red Velvet Latte HOT": 18000,
-      "Red Velvet Latte ICE": 18000,
-      "Tiramisu Latte HOT": 18000,
-      "Tiramisu Latte ICE": 18000
-    },
-    "FRAPPE": {
-      "Chocolate Frappe": 20000,
-      "Hazelnut Frappe": 20000,
-      "Matcha Frappe": 20000,
-      "Taro Frappe": 20000,
-      "Taro Oreo Frappe": 20000
-    },
-    "MILKSHAKE": {
-      "Chocolate Milk Shake": 18000,
-      "Strawberry Milk Shake": 18000,
-      "Vanilla Milk Shake": 18000,
-      "Oreo Milk Shake": 18000,
-      "Regal Milk Shake": 18000,
-      "Regal Oreo Milk Shake": 22000,
-      "Additional Boba": 3000
-    },
-    "YAKULT DRINK SERIES": {
-      "Lychee Yakult": 15000,
-      "Mango Yakult": 15000,
-      "Strawberry Yakult": 15000
-    },
-    "SPECIAL ICE": {
-      "Es Tape Ketan Ireng": 20000,
-      "Mineral Water": 5000
-    }
-  },
-
-  "SNACK": {
-    "SNACK & BITES": {
-      "Puding": 5000,
-      "Beef Burger": 20000,
-      "Chicken Burger": 15000,
-      "Chicken Lolipop": 18000,
-      "French Fries": 15000,
-      "Potato Wedges": 15000,
-      "Jamur Crispy": 12000,
-      "Onion Ring": 15000,
-      "Kebab 06": 12000,
-      "Martabak Mini": 12000,
-      "Lumpia Rebung": 12000,
-      "Sosis Solo": 12000,
-      "Tahu Crispy": 10000,
-      "Tahu Mercon": 12000
-    },
-    "BANANA KRESS / BAKAR": {
-      "Original KRESS": 10000,
-      "Original BAKAR": 10000,
-      "Chocolate KRESS": 12000,
-      "Chocolate BAKAR": 12000,
-      "Chese KRESS": 12000,
-      "Chese BAKAR": 12000,
-      "Chocolate Cheese KRESS": 15000,
-      "Chocolate Cheese BAKAR": 15000
-    },
-    "TOAST BREAD": {
-      "Ovomaltine": 12000,
-      "Keju Gondrong": 15000,
-      "Ovo - Cheese": 18000
-    },
-    "ROTI MARYAM": {
-      "Original": 8000,
-      "Chocolate": 10000,
-      "Chese": 12000,
-      "Chocolate Cheese": 15000
-    },
-    "BROWNIES PARADISE": {
-      "Choco Lava": 20000,
-      "Matcha Lava": 20000,
-      "Strawberry Lava": 20000,
-      "Vanilla Lava": 20000
     }
   },
 
@@ -365,25 +313,236 @@ const data = {
       "Sambal": 4000,
       "Sauce Steak": 5000,
       "Telur": 5000,
-      "Take Away Charge": 5000
+      "Charge Take Away": 1000,
+      "Additional Boba": 3000
+    }
+  },
+
+  "ARABIAN NIGHT SNACK": {
+    "MENU": {
+      "Kebab 06": 12000,
+      "Martabak Mini": 12000,
+      "Samosa": 15000,
+
+      "Roti Maryam Original": 8000,
+      "Roti Maryam Chocolate": 10000,
+      "Roti Maryam Cheese": 12000,
+      "Roti Maryam Chocolate Cheese": 15000
+    }
+  },
+
+  "SNACK": {
+    "SNACK & BITES": {
+      "Beef Burger": 20000,
+      "Chicken Burger": 15000,
+      "Chicken Lolipop": 18000,
+      "French Fries": 15000,
+      "Jamur Crispy": 12000,
+      "Lumpia Rebung": 12000,
+      "Onion Ring": 15000,
+      "Potato Wedges": 15000,
+      "Puding": 5000,
+      "Sosis Solo": 12000,
+      "Tahu Crispy": 10000,
+      "Tahu Mercon": 12000
+    }
+  },
+
+  "DESSERT": {
+    "MENU": {
+      "Banana Original": { price: 10000, options: ["Kress","Bakar"] },
+      "Banana Chocolate": { price: 12000, options: ["Kress","Bakar"] },
+      "Banana Cheese": { price: 12000, options: ["Kress","Bakar"] },
+      "Banana Chocolate Cheese": { price: 15000, options: ["Kress","Bakar"] },
+
+      "Toast Bread Ovomaltine": 12000,
+      "Toast Bread Keju Gondrong": 15000,
+      "Toast Bread Ovo - Cheese": 18000,
+
+      "Brownies Choco Lava": 20000,
+      "Brownies Matcha Lava": 20000,
+      "Brownies Strawberry Lava": 20000,
+      "Brownies Vanilla Lava": 20000
+    }
+  },
+
+  "ARABIAN DRINK": {
+    "MENU": {
+      "Kopi Kurma": { price: 25000, options: ["Hot","Ice"] },
+      "Kopi Yaman": { price: 25000, options: ["Hot","Ice"] },
+
+      "Kopi Al Khomar": 18000,
+      "Kharak Chai (Tea)": 18000,
+      "Rose Sparkling": 18000,
+      "Blue Lemonade": 18000,
+      "Arabian Nights Sparkling": 18000,
+      "Grenadine Sparkling": 18000,
+      "Butterfly Bloom Sparkling": 18000,
+
+      "Rose Milk": { price: 18000, options: ["Hot","Ice"] },
+      "Kurma Milk": { price: 18000, options: ["Hot","Ice"] },
+      "Grenadine Milk": { price: 18000, options: ["Hot","Ice"] },
+
+      "Pandan Kacang Hijau Milk": 18000
+    }
+  },
+
+  "COFFEE ADDICT": {
+    "MENU": {
+      "Brewed Coffee (Kopi Hitam)": 10000,
+      "Americano": { price: 15000, options: ["Hot","Ice"] },
+      "Long Black": { price: 15000, options: ["Hot","Ice"] },
+      "Coffee Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Cappucinno": { price: 18000, options: ["Hot","Ice"] },
+
+      "Affogato Single Shot": { price: 15000, options: ["VNL","Choco"] },
+
+      "Bon Bon / Sanger": 15000,
+      "Caramel Macchiato": 25000,
+      "Espresso Single Shot": 10000,
+      "Flat White": 18000,
+      "Ice Coffee Matcha": 18000,
+
+      "Additional Shot": 5000
+    }
+  },
+
+  "TEA SERIES": {
+    "MENU": {
+      "Butterfly Pea Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Chamomile Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Green Thai Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Jasmine Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Lemon Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Lychee Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Peach Tea": { price: 15000, options: ["Hot","Ice"] },
+      "Thai Tea": { price: 15000, options: ["Hot","Ice"] },
+
+      "Tea Party": { price: 50000, options: ["Only Hot"] }
+    }
+  },
+
+  "MINUMAN": {
+    "MENU": {
+      "Choco": { price: 15000, options: ["Hot","Ice"] },
+      "Jahe": { price: 15000, options: ["Hot","Ice"] },
+      "Millo": { price: 10000, options: ["Hot","Ice"] },
+      "Pure Orange Juice": { price: 12000, options: ["Hot","Ice"] },
+
+      "06 Squash Drink": 8000,
+      "Banana Split 06": 10000,
+
+      "Brown Sugar Boba Fresh Milk": 18000,
+      "Brown Sugar Boba Milk Tea": 18000,
+
+      "Es Tape Ketan Ireng": 20000,
+      "Ice Cream": 12000,
+      "Mineral Water": 5000,
+
+      "Mojito": 15000,
+      "Soda Gembira": 20000,
+      "Soda Lychee": 20000
+    }
+  },
+
+  "MILK BASE": {
+    "MENU": {
+      "Frappe Chocolate": 20000,
+      "Frappe Hazelnut": 20000,
+      "Frappe Matcha": 20000,
+      "Frappe Taro": 20000,
+      "Frappe Taro Oreo": 20000,
+
+      "Milk Shake Chocolate": 18000,
+      "Milk Shake Strawberry": 18000,
+      "Milk Shake Vanilla": 18000,
+      "Milk Shake Oreo": 18000,
+      "Milk Shake Regal": 18000,
+      "Milk Shake Regal Oreo": 22000,
+
+      "Yakult Lychee": 15000,
+      "Yakult Mango": 15000,
+      "Yakult Strawberry": 15000
+    }
+  },
+
+  "LATTE": {
+    "MENU": {
+      "Choco Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Choco Matcha Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Hazelnut Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Matcha Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Red Velvet Latte": { price: 18000, options: ["Hot","Ice"] },
+      "Tiramisu Latte": { price: 18000, options: ["Hot","Ice"] }
+    }
+  },
+
+  "SMOOTHIES": {
+    "MENU": {
+      "Apple Peach Delight": 25000,
+      "Chocolate Avocado Bliss": 25000,
+      "Mango Berry Fusion": 25000,
+      "Banana Berry Smoothie": 25000,
+
+      "Additional Cheese": 5000,
+      "Additional Choco": 5000
     }
   }
 };
 
 /* ========= CART ========= */
-let cart = {}; // { [id]: { name, q, p, id } }
+let cart = {}; // cart[id] = { name,q,p,id,note,option,meta,isDailySpecial }
 let total = 0;
 
 function formatRp(n){ return Number(n || 0).toLocaleString("id-ID"); }
-
 function getItemPrice(val){
   if (typeof val === "number") return val;
   if (val && typeof val === "object" && typeof val.price === "number") return val.price;
   return 0;
 }
-
 function updateTotal(){
   document.getElementById("total").innerText = formatRp(total);
+}
+
+/* ========= DAY FILTER (SPECIAL HARIAN) ========= */
+function getSelectedDayIndex(){
+  const tanggalEl = document.getElementById("tanggal");
+  const v = tanggalEl?.value;
+  if (!v) return null;
+  const d = new Date(v + "T00:00:00");
+  if (Number.isNaN(d.getTime())) return null;
+  return d.getDay(); // 0 Minggu ... 6 Sabtu
+}
+
+function isDailyAvailable(itemVal){
+  if (!itemVal || typeof itemVal !== "object" || !Array.isArray(itemVal.days)) return true;
+  const day = getSelectedDayIndex();
+  if (day === null) return false; // belum pilih tanggal => daily tidak tampil
+  return itemVal.days.includes(day);
+}
+
+function purgeInvalidDailyFromCart(){
+  const day = getSelectedDayIndex();
+  if (day === null) return;
+
+  let removedAny = false;
+  for (const id in cart){
+    const it = cart[id];
+    if (it?.isDailySpecial){
+      const meta = it.meta;
+      if (!meta) continue;
+      const itemVal = data?.[meta.category]?.[meta.subcat]?.[meta.itemName];
+      if (!itemVal || !isDailyAvailable(itemVal)){
+        total -= (it.q * it.p);
+        delete cart[id];
+        removedAny = true;
+      }
+    }
+  }
+  if (removedAny){
+    updateTotal();
+    alert("Menu harian yang tidak sesuai dengan hari pada tanggal reservasi otomatis dihapus dari pesanan.");
+  }
 }
 
 /* ========= SEARCH ========= */
@@ -392,10 +551,7 @@ let searchQuery = "";
 document.addEventListener("DOMContentLoaded", () => {
   const s = document.getElementById("search");
   if (s){
-    // realtime
     s.addEventListener("input", () => applySearch(true));
-
-    // enter
     s.addEventListener("keydown", (e) => {
       if (e.key === "Enter"){
         e.preventDefault();
@@ -403,9 +559,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  const tanggalEl = document.getElementById("tanggal");
+  if (tanggalEl){
+    tanggalEl.addEventListener("change", () => {
+      purgeInvalidDailyFromCart();
+      render();
+    });
+  }
 });
 
-function applySearch(isLive){
+function applySearch(){
   const s = document.getElementById("search");
   searchQuery = (s?.value || "").trim().toLowerCase();
   render();
@@ -413,24 +577,64 @@ function applySearch(isLive){
 
 /* ========= RENDER HELPERS ========= */
 function makeId(category, subcat, itemName){
-  return (category + "_" + subcat + "_" + itemName).replace(/[^a-z0-9]/gi,'_');
+  return (category + "_" + subcat + "_" + itemName)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/gi,'_');
 }
-function safeText(s){
-  return String(s).replace(/'/g,"\\'");
+function safeText(s){ return String(s).replace(/'/g,"\\'"); }
+function escapeHtml(s){
+  return String(s || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+function ensureCartItem(id, name, price, meta, isDailySpecial){
+  if (!cart[id]){
+    cart[id] = { name, q: 0, p: price, id, note: "", option: "", meta, isDailySpecial: !!isDailySpecial };
+  } else {
+    cart[id].name = name;
+    cart[id].p = price;
+    cart[id].meta = meta;
+    cart[id].isDailySpecial = !!isDailySpecial;
+  }
+  return cart[id];
+}
+
+function saveNote(id){
+  const el = document.getElementById("n_" + id);
+  if (!el) return;
+  if (!cart[id]) cart[id] = { name:"", q:0, p:0, id, note:"", option:"" };
+  cart[id].note = el.value;
+}
+function saveOption(id){
+  const el = document.getElementById("o_" + id);
+  if (!el) return;
+  if (!cart[id]) cart[id] = { name:"", q:0, p:0, id, note:"", option:"" };
+  cart[id].option = el.value;
 }
 
 function renderItem(category, subcat, itemName, itemVal){
+  if (!isDailyAvailable(itemVal)) return "";
+
   const price = getItemPrice(itemVal);
   const id = makeId(category, subcat, itemName);
   const safeName = safeText(itemName);
 
-  // options dropdown (kalau ada)
+  const meta = { category, subcat, itemName };
+  const isDailySpecial = (itemVal && typeof itemVal === "object" && Array.isArray(itemVal.days));
+  const it = ensureCartItem(id, itemName, price, meta, isDailySpecial);
+
   let optHtml = "";
   if (itemVal && typeof itemVal === "object" && Array.isArray(itemVal.options) && itemVal.options.length){
-    const opts = itemVal.options.map(o => `<option value="${o}">${o}</option>`).join("");
+    const current = it.option || "";
+    const opts = itemVal.options.map(o => {
+      const selected = (o === current) ? "selected" : "";
+      return `<option value="${escapeHtml(o)}" ${selected}>${escapeHtml(o)}</option>`;
+    }).join("");
+
     optHtml = `
       <label style="font-size:12px;color:#90caf9">Varian</label>
-      <select id="o_${id}">
+      <select id="o_${id}" onchange="saveOption('${id}')">
         <option value="">Pilih varian</option>
         ${opts}
       </select>
@@ -440,31 +644,26 @@ function renderItem(category, subcat, itemName, itemVal){
   return `
     <div class="menu">
       <div class="row">
-        <span>${itemName}<br>Rp ${formatRp(price)}</span>
+        <span>${escapeHtml(itemName)}<br>Rp ${formatRp(price)}</span>
         <div>
           <button type="button" onclick="add('${safeName}', ${price}, '${id}')">+</button>
-          <span class="qty" id="q_${id}">${cart[id]?.q || 0}</span>
+          <span class="qty" id="q_${id}">${it.q || 0}</span>
           <button type="button" onclick="remove('${safeName}', ${price}, '${id}')">-</button>
         </div>
       </div>
       ${optHtml}
-      <textarea id="n_${id}" placeholder="Catatan menu ini..."></textarea>
+      <textarea id="n_${id}" placeholder="Catatan menu ini..." oninput="saveNote('${id}')">${escapeHtml(it.note || "")}</textarea>
     </div>
   `;
 }
 
-/* ========= RENDER MAIN =========
-   - Jika searchQuery aktif: tampilkan "Hasil Pencarian" (tanpa accordion) agar terlihat
-   - Jika kosong: tampilkan accordion normal
-*/
+/* ========= RENDER MAIN ========= */
 function render(){
   const menuEl = document.getElementById("menu");
   let html = "";
 
-  // MODE: SEARCH RESULT
   if (searchQuery){
-    html += `<div class="search-title">Hasil Pencarian: "${searchQuery}"</div>`;
-
+    html += `<div class="search-title">Hasil Pencarian: "${escapeHtml(searchQuery)}"</div>`;
     let found = 0;
 
     for (const category in data){
@@ -472,30 +671,33 @@ function render(){
       for (const subcat in subcats){
         const items = subcats[subcat];
         for (const itemName in items){
+          const itemVal = items[itemName];
+          if (!isDailyAvailable(itemVal)) continue;
+
           const hay = (category + " " + subcat + " " + itemName).toLowerCase();
           if (!hay.includes(searchQuery)) continue;
 
+          const block = renderItem(category, subcat, itemName, itemVal);
+          if (!block) continue;
           found++;
-          html += renderItem(category, subcat, itemName, items[itemName]);
+          html += block;
         }
       }
     }
 
     if (found === 0){
-      html += `<div class="empty">Tidak ada menu yang cocok. Coba kata lain (contoh: "latte", "ayam", "indomie").</div>`;
+      html += `<div class="empty">Tidak ada menu yang cocok. Coba kata lain (contoh: kebuli, jeddah, indomie, latte).</div>`;
     }
 
     menuEl.innerHTML = html;
     return;
   }
 
-  // MODE: NORMAL ACCORDION
   let catIndex = 0;
-
   for (const category in data){
     html += `
       <div class="acc" onclick="toggleCat(${catIndex})">
-        <span>${category}</span>
+        <span>${escapeHtml(category)}</span>
         <small>Click</small>
       </div>
       <div class="panel" id="cat_${catIndex}">
@@ -507,7 +709,7 @@ function render(){
     for (const subcat in subcats){
       html += `
         <div class="acc2" onclick="toggleSub(${catIndex}, ${subIndex})">
-          <span>${subcat}</span>
+          <span>${escapeHtml(subcat)}</span>
           <small>Click</small>
         </div>
         <div class="panel2" id="sub_${catIndex}_${subIndex}">
@@ -515,15 +717,28 @@ function render(){
 
       const items = subcats[subcat];
 
-      for (const itemName in items){
-        html += renderItem(category, subcat, itemName, items[itemName]);
+      const isDailyCat = (category === "ARABIAN NIGHT MENU (HARIAN)");
+      if (isDailyCat && getSelectedDayIndex() === null){
+        html += `<div class="empty">Pilih tanggal reservasi untuk menampilkan menu harian.</div>`;
+      } else {
+        let anyShown = false;
+        for (const itemName in items){
+          const block = renderItem(category, subcat, itemName, items[itemName]);
+          if (block){
+            anyShown = true;
+            html += block;
+          }
+        }
+        if (isDailyCat && !anyShown){
+          html += `<div class="empty">Tidak ada menu harian untuk hari ini.</div>`;
+        }
       }
 
-      html += `</div>`; // panel2
+      html += `</div>`;
       subIndex++;
     }
 
-    html += `</div>`; // panel kategori
+    html += `</div>`;
     catIndex++;
   }
 
@@ -541,8 +756,6 @@ function toggleCat(catIndex){
       p.style.display = "none";
     }
   });
-
-  // saat ganti kategori, tutup semua subpanel
   document.querySelectorAll(".panel2").forEach(p => p.style.display = "none");
 }
 
@@ -562,7 +775,7 @@ function toggleSub(catIndex, subIndex){
 
 /* ========= CART OPS ========= */
 function add(name, price, id){
-  if (!cart[id]) cart[id] = { name, q: 0, p: price, id };
+  if (!cart[id]) cart[id] = { name, q: 0, p: price, id, note: "", option: "", meta: null, isDailySpecial: false };
   cart[id].q++;
   total += price;
 
@@ -580,11 +793,19 @@ function remove(name, price, id){
     const qEl = document.getElementById("q_" + id);
     if (qEl) qEl.innerText = cart[id].q;
 
+    if (cart[id].q === 0) delete cart[id];
     updateTotal();
   }
 }
 
 /* ========= WA ========= */
+function formatTanggalId(iso){
+  if (!iso) return "";
+  const [y,m,d] = iso.split("-");
+  if (!y || !m || !d) return iso;
+  return `${d}/${m}/${y}`;
+}
+
 function sendWA(){
   const nama = document.getElementById("nama");
   const tanggal = document.getElementById("tanggal");
@@ -599,9 +820,11 @@ function sendWA(){
     return;
   }
 
+  purgeInvalidDailyFromCart();
+
   let t = `RESERVASI ZERO SIX SKY LOUNGE\n\n`;
   t += `Nama: ${nama.value}\n`;
-  t += `Tanggal: ${tanggal.value}\n`;
+  t += `Tanggal: ${formatTanggalId(tanggal.value)}\n`;
   t += `Jam: ${jam.value}\n`;
   t += `Event: ${eventName.value}\n`;
   t += `Lokasi: ${lokasi.value}\n`;
@@ -611,8 +834,8 @@ function sendWA(){
   for (const id in cart){
     const it = cart[id];
     if (it.q > 0){
-      const catatan = document.getElementById("n_" + it.id)?.value || "";
-      const opsi = document.getElementById("o_" + it.id)?.value || "";
+      const catatan = it.note || "";
+      const opsi = it.option || "";
       const lineTotal = it.q * it.p;
 
       t += `${i}. ${it.name}${opsi ? ` (${opsi})` : ""} x${it.q} = Rp ${formatRp(lineTotal)}\n`;
@@ -633,4 +856,3 @@ function sendWA(){
 
 </body>
 </html>
-\
