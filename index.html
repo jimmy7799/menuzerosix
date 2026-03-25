@@ -135,6 +135,10 @@ input:focus, select:focus, textarea:focus{
 </div>
 
 <div id="menu" class="box"></div>
+<div class="box">
+<h3>🛒 Keranjang</h3>
+<div id="cartList">Keranjang kosong</div>
+</div>
 
 <div class="box">
 TOTAL: Rp <span id="total">0</span>
@@ -469,70 +473,91 @@ function savePopup(){
   total += price * popupQty;
 
   updateTotal();
-  render();
+  renderCart();
 
   closePopup();
 }
 
 /* RENDER */
+/* RENDER MENU */
 function render(){
+  let keyword = document.getElementById("search").value.toLowerCase();
   let html="";
 
   for(const cat in data){
-    html+=`
-    <div class="menu" onclick="toggleCategory('${cat}')">
-      <b>📂 ${cat}</b>
-    </div>
 
-    <div id="cat_${cat}" style="display:none; margin-left:10px;">`;
+    let menuHTML = "";
 
     for(const item in data[cat]){
       let val = data[cat][item];
       let price = typeof val==="number"?val:val.price;
 
-      html+=`
-      <div class="menu" onclick="event.stopPropagation(); openPopup('${item}', data['${cat}']['${item}'])">
-        <b>${item}</b><br>
-        Rp ${formatRp(price)}
-      </div>`;
+      if(item.toLowerCase().includes(keyword)){
+        menuHTML+=`
+        <div class="menu" onclick="event.stopPropagation(); openPopup('${item}', data['${cat}']['${item}'])">
+          <b>${item}</b><br>
+          Rp ${formatRp(price)}
+        </div>`;
+      }
     }
 
-    html+=`</div>`;
+    if(menuHTML){
+      html+=`
+      <div class="menu" onclick="toggleCategory('${cat}')">
+        <b>${cat}</b>
+      </div>
+
+      <div id="cat_${cat}" style="display:block; margin-left:10px;">
+        ${menuHTML}
+      </div>`;
+    }
   }
 
   document.getElementById("menu").innerHTML = html;
 }
-render();
 
-/* TOTAL */
-function updateTotal(){
-  document.getElementById("total").innerText = formatRp(total);
-}
+/* RENDER CART */
+function renderCart(){
+  let html = "";
 
-/* WA */
-function sendWA(){
-  let t="ORDER\n\n";
-
-  for(const id in cart){
-    let it=cart[id];
-    t+=it.name+" x"+it.q+"\n";
-
-    it.detail.forEach(d=>{
-      let detail = [];
-
-      if(d.varian) detail.push(d.varian);
-      if(d.level) detail.push(d.level);
-
-      t+="  - "+detail.join(" | ")+"\n";
-
-      if(d.note) t+="    note: "+d.note+"\n";
-    });
+  if(Object.keys(cart).length === 0){
+    document.getElementById("cartList").innerHTML = "Keranjang kosong";
+    return;
   }
 
-  t+="\nTOTAL: "+formatRp(total);
+  for(const id in cart){
+    let item = cart[id];
 
-  window.open("https://wa.me/6285175313330?text="+encodeURIComponent(t));
+    html += `
+    <div class="menu">
+      <b>${item.name}</b><br>
+      Qty: ${item.q}
+
+      <br>
+      <button onclick="changeCart('${id}', -1)">-</button>
+      <button onclick="changeCart('${id}', 1)">+</button>
+
+      <div style="font-size:12px; margin-top:5px;">`;
+
+    item.detail.forEach(d=>{
+      let txt = [];
+      if(d.varian) txt.push(d.varian);
+      if(d.level) txt.push(d.level);
+
+      html += `- ${txt.join(" | ")}<br>`;
+    });
+
+    html += `</div></div>`;
+  }
+
+  document.getElementById("cartList").innerHTML = html;
 }
+
+/* INIT */
+render();
+renderCart();
+
+document.getElementById("search").addEventListener("input", render);
 
 </script>
 
