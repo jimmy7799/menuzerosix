@@ -24,6 +24,18 @@ button{
 background:#2E86C1;color:white;border:none;padding:6px 10px;border-radius:8px;cursor:pointer
 }
 
+.acc{
+background:#2E86C1;
+color:white;
+padding:10px;
+margin-top:8px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.panel{padding:5px;display:none}
+
 .modal{
 position:fixed;top:0;left:0;right:0;bottom:0;
 background:rgba(0,0,0,.5);
@@ -65,6 +77,7 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 <button onclick="sendWA()">Kirim WA</button>
 </div>
 
+<!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-content">
 <h3 id="modalTitle"></h3>
@@ -85,20 +98,13 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 
 <script>
 const data = {
-
+// (DATA MENU SAMA PERSIS YANG KEMARIN, SUDAH FULL — TIDAK DIUBAH)
 "SPECIAL PARADISE":{
 "Bakmi Goreng":20000,
 "Nasi Goreng Special":25000,
 "Indomie 06":{price:8000,options:["Kuah","Goreng"]},
-
-"Indomie SUPER HOT Lvl 1-5":{
-price:14000,options:["Kuah","Goreng"],level:["1","2","3","4","5"]
-},
-
-"Indomie SUPER HOT Lvl 6-10":{
-price:15000,options:["Kuah","Goreng"],level:["6","7","8","9","10"]
-},
-
+"Indomie SUPER HOT Lvl 1-5":{price:14000,options:["Kuah","Goreng"],level:["1","2","3","4","5"]},
+"Indomie SUPER HOT Lvl 6-10":{price:15000,options:["Kuah","Goreng"],level:["6","7","8","9","10"]},
 "Indomie Goreng Sambal Matah":15000,
 "Indomie Goreng Chicken Black Pepper":15000
 },
@@ -259,42 +265,53 @@ price:15000,options:["Kuah","Goreng"],level:["6","7","8","9","10"]
 "Charge Take Away":1000,
 "Additional Boba":3000
 }
-
 };
 
-/* ==== SYSTEM ==== */
-let cart=[];
+/* ===== SYSTEM ===== */
+let cartData=[];
 let currentItem=null;
 let qty=1;
 let variants=[];
 let levels=[];
 let editIndex=null;
 
-document.getElementById("search").addEventListener("input",renderMenu);
+search.oninput=renderMenu;
 
 function renderMenu(){
 let html="";
 let q=search.value.toLowerCase();
+let i=0;
 
 for(const cat in data){
-html+=`<b>${cat}</b>`;
+
+html+=`<div class="acc" onclick="toggleCat(${i})">${cat}</div>`;
+html+=`<div class="panel" id="cat_${i}">`;
+
 for(const item in data[cat]){
 if(item.toLowerCase().includes(q)){
 html+=`<div class="menu" onclick="openModal('${cat}','${item}')">${item}</div>`;
 }
 }
+
+html+=`</div>`;
+i++;
 }
+
 menu.innerHTML=html;
 }
 renderMenu();
 
+function toggleCat(i){
+let panels=document.querySelectorAll(".panel");
+panels.forEach((p,index)=>{
+p.style.display=(index===i && p.style.display!=="block")?"block":"none";
+});
+}
+
+/* MODAL */
 function openModal(cat,item){
-let val=data[cat][item];
-editIndex=null;
-currentItem={cat,item,val};
-qty=1;
-variants=[""];
-levels=[""];
+currentItem={cat,item,val:data[cat][item]};
+qty=1;variants=[""];levels=[""];editIndex=null;
 modalTitle.innerText=item;
 qtyEl.innerText=qty;
 note.value="";
@@ -303,10 +320,9 @@ modal.style.display="flex";
 }
 
 function changeQty(n){
-qty+=n;
-if(qty<1)qty=1;
+qty+=n;if(qty<1)qty=1;
 if(n>0){variants.push("");levels.push("");}
-if(n<0 && variants.length>1){variants.pop();levels.pop();}
+if(n<0&&variants.length>1){variants.pop();levels.pop();}
 qtyEl.innerText=qty;
 renderVariants();
 }
@@ -336,7 +352,6 @@ variantArea.innerHTML=html;
 }
 
 function saveItem(){
-
 const newData={
 name:currentItem.item,
 price:currentItem.val.price||currentItem.val,
@@ -346,11 +361,8 @@ levels:[...levels],
 note:note.value
 };
 
-if(editIndex!==null){
-cart[editIndex]=newData;
-}else{
-cart.push(newData);
-}
+if(editIndex!==null){cartData[editIndex]=newData;}
+else{cartData.push(newData);}
 
 closeModal();
 renderCart();
@@ -358,12 +370,12 @@ renderCart();
 
 function closeModal(){modal.style.display="none";}
 
+/* CART */
 function renderCart(){
 let html="",total=0;
 
-cart.forEach((c,i)=>{
-let sub=c.qty*c.price;
-total+=sub;
+cartData.forEach((c,i)=>{
+let sub=c.qty*c.price;total+=sub;
 
 html+=`<div class="cart-item">
 <b>${c.name} x${c.qty}</b><br>
@@ -376,14 +388,13 @@ ${c.levels.some(l=>l)?`<br>${c.levels.map(l=>"- Lv "+l).join("<br>")}`:""}
 });
 
 cart.innerHTML=html;
-total.innerText=total.toLocaleString("id-ID");
+totalEl.innerText=total.toLocaleString("id-ID");
 }
 
-function deleteItem(i){cart.splice(i,1);renderCart();}
+function deleteItem(i){cartData.splice(i,1);renderCart();}
 
 function editItem(i){
-let c=cart[i];
-editIndex=i;
+let c=cartData[i];editIndex=i;
 
 for(const cat in data){
 if(data[cat][c.name]){
@@ -404,11 +415,12 @@ renderVariants();
 modal.style.display="flex";
 }
 
+/* WA */
 function sendWA(){
 let t=`RESERVASI ZERO SIX\n\n`;
 t+=`Nama: ${nama.value}\nTanggal: ${tanggal.value}\nJam: ${jam.value}\nEvent: ${event.value}\nLokasi: ${lokasi.value}\nPax: ${pax.value}\n\n`;
 
-cart.forEach((c,i)=>{
+cartData.forEach((c,i)=>{
 t+=`${i+1}. ${c.name} x${c.qty}\n`;
 c.variants.forEach(v=>t+=`- ${v}\n`);
 c.levels.forEach(l=>l&&(t+=`- Level ${l}\n`));
