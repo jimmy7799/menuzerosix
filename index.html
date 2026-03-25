@@ -438,8 +438,22 @@ function toggleCategory(cat){
 }
 
 /* CLOSE */
-function closePopup(){
-  document.getElementById("popup").style.display = "none";
+function toggleCategory(cat){
+
+  // cek apakah kategori ini sedang terbuka
+  let current = document.getElementById("cat_"+cat);
+  let isOpen = current.style.display === "block";
+
+  // tutup semua kategori dulu
+  for(const c in data){
+    let el = document.getElementById("cat_"+c);
+    if(el) el.style.display = "none";
+  }
+
+  // kalau sebelumnya tertutup → buka
+  if(!isOpen){
+    current.style.display = "block";
+  }
 }
 
 /* SAVE */
@@ -507,7 +521,7 @@ function render(){
         <b>${cat}</b>
       </div>
 
-      <div id="cat_${cat}" style="display:block; margin-left:10px;">
+      <div id="cat_${cat}" style="display:none; margin-left:10px;">
         ${menuHTML}
       </div>`;
     }
