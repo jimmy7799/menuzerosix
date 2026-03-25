@@ -53,11 +53,10 @@ input, select, textarea{
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:9999;
 }
 
 .popup-box{
-  background:#ffffff;
+  background:#fff;
   padding:20px;
   border-radius:16px;
   width:320px;
@@ -69,19 +68,46 @@ input, select, textarea{
 
 <h2>ORDER MENU</h2>
 
+<!-- RESERVASI -->
 <div class="box">
-<input id="search" placeholder="Cari menu..." oninput="render()" />
+  <input id="nama" placeholder="Nama Pembeli" />
+  <input type="date" id="tanggal" />
+  <input type="time" id="jam" />
+  <input id="eventName" placeholder="Event" />
+
+  <select id="lokasi">
+    <option value="">Pilih Lokasi</option>
+    <option>Indoor</option>
+    <option>Outdoor</option>
+  </select>
+
+  <input type="number" id="pax" placeholder="Jumlah Pax" />
 </div>
 
+<!-- SEARCH -->
+<div class="box">
+  <input id="search" placeholder="Cari menu..." oninput="render()" />
+</div>
+
+<!-- MENU -->
 <div id="menu" class="box"></div>
 
+<!-- CART -->
 <div class="box">
 <h3>🛒 Keranjang</h3>
-<div id="cartList">Keranjang kosong</div>
+<div id="cartList">Kosong</div>
 </div>
 
 <div class="box">
 TOTAL: Rp <span id="total">0</span>
+</div>
+
+<!-- CATATAN + WA -->
+<div class="box">
+  <textarea id="note" placeholder="Catatan umum"></textarea>
+  <button onclick="sendWA()" style="width:100%;padding:12px;">
+    Kirim ke WhatsApp
+  </button>
 </div>
 
 <!-- POPUP -->
@@ -96,7 +122,7 @@ TOTAL: Rp <span id="total">0</span>
 
     <div id="popupVarian"></div>
 
-    <textarea id="popupNote" placeholder="Catatan"></textarea><br><br>
+    <textarea id="popupNote" placeholder="Catatan item"></textarea>
 
     <button onclick="savePopup()">Simpan</button>
     <button onclick="closePopup()">Batal</button>
@@ -105,6 +131,7 @@ TOTAL: Rp <span id="total">0</span>
 
 <script>
 
+/* DATA (SINGKAT CONTOH) */
 const data = {
 
   "SPECIAL PARADISE": {
@@ -296,6 +323,7 @@ const data = {
     "Additional Choco": 5000
   }
 };
+
 let cart = {};
 let total = 0;
 let popupItem=null;
@@ -309,11 +337,9 @@ function formatRp(n){
 function openPopup(name,val){
   popupItem={name,val};
   popupQty=1;
-
   document.getElementById("popupTitle").innerText=name;
   document.getElementById("popupNote").value="";
   document.getElementById("popup").style.display="flex";
-
   updatePopup();
 }
 
@@ -335,7 +361,7 @@ function updatePopup(){
   if(typeof popupItem.val==="object"){
     for(let i=0;i<popupQty;i++){
 
-      html+=`<div style="margin-bottom:10px">`;
+      html+=`<div>`;
 
       if(popupItem.val.options){
         html+=`
@@ -343,15 +369,15 @@ function updatePopup(){
         <select id="var_${i}">
           <option value="">-- pilih --</option>
           ${popupItem.val.options.map(o=>`<option>${o}</option>`).join("")}
-        </select><br>`;
+        </select>`;
       }
 
       if(popupItem.val.levels){
         html+=`
         Level
         <select id="lvl_${i}">
-          <option value="">-- pilih level --</option>
-          ${popupItem.val.levels.map(l=>`<option>Level ${l}</option>`).join("")}
+          <option value="">-- pilih --</option>
+          ${popupItem.val.levels.map(l=>`<option>${l}</option>`).join("")}
         </select>`;
       }
 
@@ -370,20 +396,9 @@ function savePopup(){
   if(!cart[id]) cart[id]={name:id,q:0,p:price,detail:[]};
 
   for(let i=0;i<popupQty;i++){
-
     let varian = document.getElementById("var_"+i)?.value || "";
     let level = document.getElementById("lvl_"+i)?.value || "";
     let note = document.getElementById("popupNote").value;
-
-    if(popupItem.val.options && !varian){
-      alert("Varian wajib dipilih!");
-      return;
-    }
-
-    if(popupItem.val.levels && !level){
-      alert("Level wajib dipilih!");
-      return;
-    }
 
     cart[id].detail.push({varian,level,note});
   }
@@ -391,9 +406,8 @@ function savePopup(){
   cart[id].q+=popupQty;
   total+=price*popupQty;
 
-  updateTotal();
   renderCart();
-
+  updateTotal();
   closePopup();
 }
 
@@ -426,10 +440,7 @@ function render(){
 
     if(menuHTML){
       html+=`
-      <div class="menu" onclick="toggleCategory('${cat}')">
-        <b>${cat}</b>
-      </div>
-
+      <div class="menu" onclick="toggleCategory('${cat}')"><b>${cat}</b></div>
       <div id="cat_${cat}" style="display:none;margin-left:10px;">
         ${menuHTML}
       </div>`;
@@ -449,33 +460,63 @@ function renderCart(){
     html+=`<div class="menu"><b>${item.name}</b> x ${item.q}<br>`;
 
     item.detail.forEach(d=>{
-      let txt=[];
-      if(d.varian) txt.push(d.varian);
-      if(d.level) txt.push(d.level);
-      if(d.note) txt.push("Note: "+d.note);
-
-      html+=`- ${txt.join(" | ")}<br>`;
+      html+=`- ${d.varian||""} ${d.level||""} ${d.note?("("+d.note+")"):""}<br>`;
     });
 
     html+=`</div>`;
   }
 
-  document.getElementById("cartList").innerHTML = html || "Keranjang kosong";
+  document.getElementById("cartList").innerHTML = html || "Kosong";
 }
 
 function updateTotal(){
   document.getElementById("total").innerText=formatRp(total);
 }
 
+/* WA */
+function sendWA(){
+
+  const nama = document.getElementById("nama").value;
+  const tanggal = document.getElementById("tanggal").value;
+  const jam = document.getElementById("jam").value;
+  const eventName = document.getElementById("eventName").value;
+  const lokasi = document.getElementById("lokasi").value;
+  const pax = document.getElementById("pax").value;
+  const note = document.getElementById("note").value;
+
+  if(!nama || !tanggal || !jam || !eventName || !lokasi || !pax){
+    alert("Lengkapi data reservasi");
+    return;
+  }
+
+  let text = "RESERVASI\n\n";
+  text += "Nama: "+nama+"\n";
+  text += "Tanggal: "+tanggal+"\n";
+  text += "Jam: "+jam+"\n";
+  text += "Event: "+eventName+"\n";
+  text += "Lokasi: "+lokasi+"\n";
+  text += "Pax: "+pax+"\n\n";
+
+  for(const id in cart){
+    let item = cart[id];
+    text += "- "+item.name+" x"+item.q+"\n";
+
+    item.detail.forEach(d=>{
+      text += "   "+(d.varian||"")+" "+(d.level||"")+" "+(d.note||"")+"\n";
+    });
+  }
+
+  text += "\nTOTAL: Rp "+formatRp(total);
+
+  window.open("https://wa.me/6285175313330?text="+encodeURIComponent(text));
+}
+
 /* INIT */
 render();
 renderCart();
 
-/* klik luar popup */
-document.getElementById("popup").addEventListener("click", function(e){
-  if(e.target.id==="popup"){
-    closePopup();
-  }
+document.getElementById("popup").addEventListener("click", e=>{
+  if(e.target.id==="popup") closePopup();
 });
 
 </script>
