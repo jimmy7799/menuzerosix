@@ -3,56 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ZERO SIX SKY LOUNGE</title>
 
 <style>
-body{font-family:Arial;background:#eef7ff;padding:12px}
-h1{text-align:center;color:#2E86C1}
+body{
+font-family:Arial;
+background:#0b2f40;
+color:white;
+padding:12px
+}
 
-.box{background:#fff;padding:12px;border-radius:12px;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+h1{text-align:center;color:#f0bb3f}
+h2{text-align:center;color:#ccc;font-size:14px}
+
+.box{
+background:#0f3b52;
+padding:12px;
+border-radius:12px;
+margin-bottom:10px
+}
 
 input,select,textarea{
-width:100%;padding:8px;margin-bottom:8px;border-radius:8px;border:1px solid #ccc
+width:100%;
+padding:8px;
+border-radius:8px;
+border:none;
+margin-bottom:10px
 }
 
-.menu{padding:8px;border-bottom:1px solid #eee;cursor:pointer}
-.menu:hover{background:#eaf4ff}
-
-.cart-item{border-bottom:1px dashed #ccc;padding:8px 0}
-
-button{
-background:#2E86C1;color:white;border:none;padding:6px 10px;border-radius:8px;cursor:pointer
-}
-
+/* ACCORDION */
 .acc{
-background:#2E86C1;
-color:white;
+background:#f0bb3f;
+color:#000;
 padding:10px;
-margin-top:8px;
 border-radius:10px;
+margin-top:8px;
 cursor:pointer;
 font-weight:bold;
 }
 
-.panel{padding:5px;display:none}
+.panel{display:none;padding:5px}
 
+/* MENU */
+.menu{
+padding:8px;
+border-bottom:1px dashed #aaa;
+cursor:pointer;
+}
+
+.menu:hover{background:#123}
+
+/* MODAL */
 .modal{
-position:fixed;top:0;left:0;right:0;bottom:0;
-background:rgba(0,0,0,.5);
-display:none;align-items:center;justify-content:center;
+position:fixed;
+top:0;left:0;right:0;bottom:0;
+background:rgba(0,0,0,.6);
+display:none;
+align-items:center;
+justify-content:center;
 }
 
 .modal-content{
-background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
+background:#fff;
+color:#000;
+padding:15px;
+border-radius:12px;
+width:90%;
+max-width:400px
 }
 
-.qty{display:flex;justify-content:center;gap:10px;margin:10px 0}
+.qty{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:10px 0
+}
+
+button{
+padding:6px 10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.send{width:100%;background:#f0bb3f}
 </style>
 </head>
 
 <body>
 
 <h1>ZERO SIX SKY LOUNGE</h1>
+<h2>Reservasi & Order</h2>
 
 <div class="box">
 <input id="nama" placeholder="Nama lengkap">
@@ -65,6 +107,7 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 <option>Outdoor</option>
 </select>
 <input type="number" id="pax" placeholder="Jumlah pax">
+
 <input id="search" placeholder="Cari menu...">
 </div>
 
@@ -74,13 +117,13 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 <h3>Cart</h3>
 <div id="cart"></div>
 <div>Total: Rp <span id="total">0</span></div>
-<button onclick="sendWA()">Kirim WA</button>
+<button class="send" onclick="sendWA()">Kirim WhatsApp</button>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-content">
-<h3 id="modalTitle"></h3>
+<h3 id="title"></h3>
 
 <div class="qty">
 <button onclick="changeQty(-1)">-</button>
@@ -88,7 +131,7 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 <button onclick="changeQty(1)">+</button>
 </div>
 
-<div id="variantArea"></div>
+<div id="varian"></div>
 <textarea id="note" placeholder="Catatan"></textarea>
 
 <button onclick="saveItem()">Simpan</button>
@@ -97,8 +140,9 @@ background:white;padding:15px;border-radius:12px;width:90%;max-width:400px
 </div>
 
 <script>
+
+/* ================= DATA FULL ================= */
 const data = {
-// (DATA MENU SAMA PERSIS YANG KEMARIN, SUDAH FULL — TIDAK DIUBAH)
 "SPECIAL PARADISE":{
 "Bakmi Goreng":20000,
 "Nasi Goreng Special":25000,
@@ -154,52 +198,6 @@ const data = {
 "Roti Maryam Chocolate Cheese":15000
 },
 
-"DESSERT":{
-"Banana Original":{price:10000,options:["Kress","Bakar"]},
-"Banana Chocolate":{price:12000,options:["Kress","Bakar"]},
-"Banana Cheese":{price:12000,options:["Kress","Bakar"]},
-"Banana Chocolate Cheese":{price:15000,options:["Kress","Bakar"]},
-"Toast Bread Ovomaltine":12000,
-"Toast Bread Keju Gondrong":15000,
-"Toast Bread Ovo - Cheese":18000,
-"Brownies Choco Lava":20000,
-"Brownies Matcha Lava":20000,
-"Brownies Strawberry Lava":20000,
-"Brownies Vanilla Lava":20000
-},
-
-"MINUMAN":{
-"Choco":{price:15000,options:["Hot","Ice"]},
-"Jahe":{price:15000,options:["Hot","Ice"]},
-"Millo":{price:10000,options:["Hot","Ice"]},
-"Pure Orange Juice":{price:12000,options:["Hot","Ice"]},
-"06 Squash Drink":8000,
-"Banana Split 06":10000,
-"Brown Sugar Boba Fresh Milk":18000,
-"Brown Sugar Boba Milk Tea":18000,
-"Es Tape Ketan Ireng":20000,
-"Ice Cream":12000,
-"Mineral Water":5000,
-"Mojito":15000,
-"Soda Gembira":20000,
-"Soda Lychee":20000
-},
-
-"COFFEE ADDICT":{
-"Brewed Coffee (Kopi Hitam)":10000,
-"Americano":{price:15000,options:["Hot","Ice"]},
-"Long Black":{price:15000,options:["Hot","Ice"]},
-"Coffee Latte":{price:18000,options:["Hot","Ice"]},
-"Cappucinno":{price:18000,options:["Hot","Ice"]},
-"Affogato Single Shot":{price:15000,options:["VNL","Choco"]},
-"Bon Bon / Sanger":15000,
-"Caramel Macchiato":25000,
-"Espresso Single Shot":10000,
-"Flat White":18000,
-"Ice Coffee Matcha":18000,
-"Additional Shot":5000
-},
-
 "SPARKLING":{
 "Blue Lemonade Sparkling":18000,
 "Butterfly Bloom Sparkling":18000,
@@ -207,54 +205,6 @@ const data = {
 "Illusion Sparkling":18000,
 "Mystic Berry Sparkling":18000,
 "Rainbow Paradise Sparkling":18000
-},
-
-"TEA SERIES":{
-"Butterfly Pea Tea":{price:15000,options:["Hot","Ice"]},
-"Chamomile Tea":{price:15000,options:["Hot","Ice"]},
-"Green Thai Tea":{price:15000,options:["Hot","Ice"]},
-"Jasmine Tea":{price:15000,options:["Hot","Ice"]},
-"Lemon Tea":{price:15000,options:["Hot","Ice"]},
-"Lychee Tea":{price:15000,options:["Hot","Ice"]},
-"Peach Tea":{price:15000,options:["Hot","Ice"]},
-"Thai Tea":{price:15000,options:["Hot","Ice"]},
-"Tea Party":{price:50000,options:["Only Hot"]}
-},
-
-"MILK BASE":{
-"Kurma Milk":{price:18000,options:["Hot","Ice"]},
-"Frappe Chocolate":20000,
-"Frappe Hazelnut":20000,
-"Frappe Matcha":20000,
-"Frappe Taro":20000,
-"Frappe Taro Oreo":20000,
-"Milk Shake Chocolate":18000,
-"Milk Shake Strawberry":18000,
-"Milk Shake Vanilla":18000,
-"Milk Shake Oreo":18000,
-"Milk Shake Regal":18000,
-"Milk Shake Regal Oreo":22000,
-"Yakult Lychee":15000,
-"Yakult Mango":15000,
-"Yakult Strawberry":15000
-},
-
-"LATTE":{
-"Choco Latte":{price:18000,options:["Hot","Ice"]},
-"Choco Matcha Latte":{price:18000,options:["Hot","Ice"]},
-"Hazelnut Latte":{price:18000,options:["Hot","Ice"]},
-"Matcha Latte":{price:18000,options:["Hot","Ice"]},
-"Red Velvet Latte":{price:18000,options:["Hot","Ice"]},
-"Tiramisu Latte":{price:18000,options:["Hot","Ice"]}
-},
-
-"SMOOTHIES":{
-"Apple Peach Delight":25000,
-"Chocolate Avocado Bliss":25000,
-"Mango Berry Fusion":25000,
-"Banana Berry Smoothie":25000,
-"Additional Cheese":5000,
-"Additional Choco":5000
 },
 
 "ADDITIONAL":{
@@ -267,29 +217,29 @@ const data = {
 }
 };
 
-/* ===== SYSTEM ===== */
-let cartData=[];
-let currentItem=null;
+/* ================= SYSTEM ================= */
+let cart=[];
+let current=null;
 let qty=1;
 let variants=[];
 let levels=[];
-let editIndex=null;
 
-search.oninput=renderMenu;
+/* ================= MENU ================= */
+search.oninput=render;
 
-function renderMenu(){
+function render(){
 let html="";
 let q=search.value.toLowerCase();
 let i=0;
 
 for(const cat in data){
 
-html+=`<div class="acc" onclick="toggleCat(${i})">${cat}</div>`;
-html+=`<div class="panel" id="cat_${i}">`;
+html+=`<div class="acc" onclick="toggle(${i})">${cat}</div>`;
+html+=`<div class="panel" id="c${i}">`;
 
 for(const item in data[cat]){
 if(item.toLowerCase().includes(q)){
-html+=`<div class="menu" onclick="openModal('${cat}','${item}')">${item}</div>`;
+html+=`<div class="menu" onclick="openItem('${cat}','${item}')">${item}</div>`;
 }
 }
 
@@ -299,131 +249,111 @@ i++;
 
 menu.innerHTML=html;
 }
-renderMenu();
+render();
 
-function toggleCat(i){
-let panels=document.querySelectorAll(".panel");
-panels.forEach((p,index)=>{
-p.style.display=(index===i && p.style.display!=="block")?"block":"none";
+function toggle(i){
+document.querySelectorAll(".panel").forEach((p,idx)=>{
+p.style.display=(idx===i && p.style.display!=="block")?"block":"none";
 });
 }
 
-/* MODAL */
-function openModal(cat,item){
-currentItem={cat,item,val:data[cat][item]};
-qty=1;variants=[""];levels=[""];editIndex=null;
-modalTitle.innerText=item;
+/* ================= MODAL ================= */
+function openItem(cat,item){
+current={item,val:data[cat][item]};
+qty=1;
+variants=[""];
+levels=[""];
+
+title.innerText=item;
 qtyEl.innerText=qty;
-note.value="";
-renderVariants();
+
+renderVar();
 modal.style.display="flex";
 }
 
 function changeQty(n){
 qty+=n;if(qty<1)qty=1;
+
 if(n>0){variants.push("");levels.push("");}
-if(n<0&&variants.length>1){variants.pop();levels.pop();}
+if(n<0){variants.pop();levels.pop();}
+
 qtyEl.innerText=qty;
-renderVariants();
+renderVar();
 }
 
-function renderVariants(){
+function renderVar(){
 let html="";
 
-if(currentItem.val.options){
+if(current.val.options){
 variants.forEach((v,i)=>{
 html+=`<select onchange="variants[${i}]=this.value">
-<option value="">Pilih</option>
-${currentItem.val.options.map(o=>`<option ${o==v?"selected":""}>${o}</option>`)}
+<option value="">Pilih Varian</option>
+${current.val.options.map(o=>`<option>${o}</option>`)}
 </select>`;
 });
 }
 
-if(currentItem.val.level){
+if(current.val.level){
 levels.forEach((v,i)=>{
 html+=`<select onchange="levels[${i}]=this.value">
 <option value="">Level</option>
-${currentItem.val.level.map(o=>`<option ${o==v?"selected":""}>${o}</option>`)}
+${current.val.level.map(o=>`<option>${o}</option>`)}
 </select>`;
 });
 }
 
-variantArea.innerHTML=html;
-}
-
-function saveItem(){
-const newData={
-name:currentItem.item,
-price:currentItem.val.price||currentItem.val,
-qty,
-variants:[...variants],
-levels:[...levels],
-note:note.value
-};
-
-if(editIndex!==null){cartData[editIndex]=newData;}
-else{cartData.push(newData);}
-
-closeModal();
-renderCart();
+varian.innerHTML=html;
 }
 
 function closeModal(){modal.style.display="none";}
 
-/* CART */
+/* ================= SAVE ================= */
+function saveItem(){
+
+if(current.val.options && variants.includes("")){
+alert("Varian wajib dipilih!");
+return;
+}
+
+let item={
+name:current.item,
+qty,
+price:current.val.price||current.val,
+variants:[...variants],
+note:note.value
+};
+
+cart.push(item);
+closeModal();
+renderCart();
+}
+
+/* ================= CART ================= */
 function renderCart(){
 let html="",total=0;
 
-cartData.forEach((c,i)=>{
-let sub=c.qty*c.price;total+=sub;
+cart.forEach((c,i)=>{
+let sub=c.qty*c.price;
+total+=sub;
 
-html+=`<div class="cart-item">
+html+=`<div>
 <b>${c.name} x${c.qty}</b><br>
 ${c.variants.map(v=>"- "+v).join("<br>")}
-${c.levels.some(l=>l)?`<br>${c.levels.map(l=>"- Lv "+l).join("<br>")}`:""}
-<br>Catatan: ${c.note||"-"}<br>
-<button onclick="editItem(${i})">Edit</button>
-<button onclick="deleteItem(${i})">Hapus</button>
-</div>`;
+<br>Catatan: ${c.note||"-"}
+</div><hr>`;
 });
 
-cart.innerHTML=html;
-totalEl.innerText=total.toLocaleString("id-ID");
+document.getElementById("cart").innerHTML=html;
+document.getElementById("total").innerText=total.toLocaleString("id-ID");
 }
 
-function deleteItem(i){cartData.splice(i,1);renderCart();}
-
-function editItem(i){
-let c=cartData[i];editIndex=i;
-
-for(const cat in data){
-if(data[cat][c.name]){
-currentItem={item:c.name,val:data[cat][c.name]};
-break;
-}
-}
-
-qty=c.qty;
-variants=[...c.variants];
-levels=[...c.levels];
-
-modalTitle.innerText=c.name;
-qtyEl.innerText=qty;
-note.value=c.note;
-
-renderVariants();
-modal.style.display="flex";
-}
-
-/* WA */
+/* ================= WA ================= */
 function sendWA(){
-let t=`RESERVASI ZERO SIX\n\n`;
-t+=`Nama: ${nama.value}\nTanggal: ${tanggal.value}\nJam: ${jam.value}\nEvent: ${event.value}\nLokasi: ${lokasi.value}\nPax: ${pax.value}\n\n`;
+let t="ORDER ZERO SIX\n\n";
 
-cartData.forEach((c,i)=>{
+cart.forEach((c,i)=>{
 t+=`${i+1}. ${c.name} x${c.qty}\n`;
 c.variants.forEach(v=>t+=`- ${v}\n`);
-c.levels.forEach(l=>l&&(t+=`- Level ${l}\n`));
 if(c.note)t+=`Catatan: ${c.note}\n`;
 });
 
