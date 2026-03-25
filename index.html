@@ -12,7 +12,6 @@ body{
   padding:12px;
 }
 
-/* BOX */
 .box{
   background:#ffffff;
   padding:12px;
@@ -21,22 +20,13 @@ body{
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* MENU */
 .menu{
   border-bottom:1px dashed #b5e3f5;
   margin-bottom:10px;
   padding-bottom:10px;
   cursor:pointer;
-  transition:0.2s;
 }
 
-.menu:hover{
-  background:#f0fbff;
-  border-radius:8px;
-  padding:8px;
-}
-
-/* BUTTON */
 button{
   background:linear-gradient(135deg,#5fd3ff,#2fb7ff);
   border:none;
@@ -45,36 +35,16 @@ button{
   color:#fff;
   font-weight:bold;
   cursor:pointer;
-  transition:0.2s;
 }
 
-button:hover{
-  background:linear-gradient(135deg,#2fb7ff,#009fe3);
-}
-
-/* QTY */
-.qty{
-  margin:0 5px;
-  font-weight:bold;
-  color:#009fe3;
-}
-
-/* INPUT */
 input, select, textarea{
   width:100%;
   margin-bottom:8px;
   padding:8px;
   border-radius:8px;
   border:1px solid #cdefff;
-  outline:none;
-  background:#f9feff;
 }
 
-input:focus, select:focus, textarea:focus{
-  border-color:#2fb7ff;
-}
-
-/* POPUP */
 .popup{
   position:fixed;
   top:0;left:0;
@@ -83,33 +53,14 @@ input:focus, select:focus, textarea:focus{
   display:none;
   align-items:center;
   justify-content:center;
+  z-index:9999;
 }
 
 .popup-box{
   background:#ffffff;
-  color:#1b3a4b;
   padding:20px;
   border-radius:16px;
   width:320px;
-  box-shadow:0 12px 30px rgba(0,0,0,0.15);
-  animation: popIn 0.2s ease;
-}
-
-.popup-box h3{
-  margin-top:0;
-  color:#009fe3;
-}
-
-/* ANIMATION */
-@keyframes popIn{
-  from{
-    transform:scale(0.9);
-    opacity:0;
-  }
-  to{
-    transform:scale(1);
-    opacity:1;
-  }
 }
 </style>
 </head>
@@ -119,22 +70,11 @@ input:focus, select:focus, textarea:focus{
 <h2>ORDER MENU</h2>
 
 <div class="box">
-<input id="nama" placeholder="Nama" />
-<input type="date" id="tanggal" />
-<input type="time" id="jam" />
-<input id="eventName" placeholder="Event" />
-
-<select id="lokasi">
-<option value="">Lokasi</option>
-<option>Indoor</option>
-<option>Outdoor</option>
-</select>
-
-<input type="number" id="pax" placeholder="Pax" />
-<input id="search" placeholder="Cari menu..." />
+<input id="search" placeholder="Cari menu..." oninput="render()" />
 </div>
 
 <div id="menu" class="box"></div>
+
 <div class="box">
 <h3>🛒 Keranjang</h3>
 <div id="cartList">Keranjang kosong</div>
@@ -142,11 +82,6 @@ input:focus, select:focus, textarea:focus{
 
 <div class="box">
 TOTAL: Rp <span id="total">0</span>
-</div>
-
-<div class="box">
-<textarea id="note" placeholder="Catatan"></textarea>
-<button onclick="sendWA()">Kirim WA</button>
 </div>
 
 <!-- POPUP -->
@@ -170,7 +105,6 @@ TOTAL: Rp <span id="total">0</span>
 
 <script>
 
-/* DATA */
 const data = {
 
   "SPECIAL PARADISE": {
@@ -362,119 +296,90 @@ const data = {
     "Additional Choco": 5000
   }
 };
-
 let cart = {};
 let total = 0;
-
-/* POPUP */
-let popupItem = null;
-let popupQty = 1;
+let popupItem=null;
+let popupQty=1;
 
 function formatRp(n){
   return Number(n).toLocaleString("id-ID");
 }
 
-/* OPEN */
+/* POPUP */
 function openPopup(name,val){
-  popupItem = {name,val};
-  popupQty = 1;
+  popupItem={name,val};
+  popupQty=1;
 
-  document.getElementById("popupTitle").innerText = name;
-  document.getElementById("popupNote").value = ""; // reset note
-  document.getElementById("popup").style.display = "flex";
+  document.getElementById("popupTitle").innerText=name;
+  document.getElementById("popupNote").value="";
+  document.getElementById("popup").style.display="flex";
 
   updatePopup();
 }
 
-/* QTY */
-function changeQty(val){
-  popupQty += val;
-  if(popupQty < 1) popupQty = 1;
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+function changeQty(v){
+  popupQty+=v;
+  if(popupQty<1) popupQty=1;
   updatePopup();
 }
 
-/* UPDATE POPUP */
 function updatePopup(){
-  document.getElementById("popupQty").innerText = popupQty;
+  document.getElementById("popupQty").innerText=popupQty;
 
-  let html = "";
+  let html="";
 
-  if(typeof popupItem.val === "object"){
+  if(typeof popupItem.val==="object"){
     for(let i=0;i<popupQty;i++){
 
-      html += `<div style="margin-bottom:10px">`;
+      html+=`<div style="margin-bottom:10px">`;
 
-      // ✅ VARIAN WAJIB
       if(popupItem.val.options){
-        html += `
-        Varian ${i+1}
+        html+=`
+        Varian
         <select id="var_${i}">
           <option value="">-- pilih --</option>
-          ${popupItem.val.options.map(o=>`<option value="${o}">${o}</option>`).join("")}
+          ${popupItem.val.options.map(o=>`<option>${o}</option>`).join("")}
         </select><br>`;
       }
 
-      // LEVEL
       if(popupItem.val.levels){
-        html += `
+        html+=`
         Level
         <select id="lvl_${i}">
           <option value="">-- pilih level --</option>
-          ${popupItem.val.levels.map(l=>`<option value="Level ${l}">Level ${l}</option>`).join("")}
+          ${popupItem.val.levels.map(l=>`<option>Level ${l}</option>`).join("")}
         </select>`;
       }
 
-      html += `</div>`;
+      html+=`</div>`;
     }
   }
 
-  document.getElementById("popupVarian").innerHTML = html;
-}
-
-/* TOGGLE CATEGORY */
-function toggleCategory(cat){
-  let el = document.getElementById("cat_"+cat);
-  el.style.display = (el.style.display === "none") ? "block" : "none";
-}
-
-/* CLOSE */
-function toggleCategory(cat){
-
-  // cek apakah kategori ini sedang terbuka
-  let current = document.getElementById("cat_"+cat);
-  let isOpen = current.style.display === "block";
-
-  // tutup semua kategori dulu
-  for(const c in data){
-    let el = document.getElementById("cat_"+c);
-    if(el) el.style.display = "none";
-  }
-
-  // kalau sebelumnya tertutup → buka
-  if(!isOpen){
-    current.style.display = "block";
-  }
+  document.getElementById("popupVarian").innerHTML=html;
 }
 
 /* SAVE */
 function savePopup(){
-  let price = typeof popupItem.val==="number" ? popupItem.val : popupItem.val.price;
+  let price = typeof popupItem.val==="number"?popupItem.val:popupItem.val.price;
   let id = popupItem.name;
 
-  if(!cart[id]) cart[id]={name:popupItem.name,q:0,p:price,detail:[]};
+  if(!cart[id]) cart[id]={name:id,q:0,p:price,detail:[]};
 
   for(let i=0;i<popupQty;i++){
+
     let varian = document.getElementById("var_"+i)?.value || "";
     let level = document.getElementById("lvl_"+i)?.value || "";
     let note = document.getElementById("popupNote").value;
 
-    // ❗ VALIDASI WAJIB PILIH VARIAN
     if(popupItem.val.options && !varian){
       alert("Varian wajib dipilih!");
       return;
     }
 
-    // ❗ VALIDASI LEVEL (khusus indomie)
     if(popupItem.val.levels && !level){
       alert("Level wajib dipilih!");
       return;
@@ -483,8 +388,8 @@ function savePopup(){
     cart[id].detail.push({varian,level,note});
   }
 
-  cart[id].q += popupQty;
-  total += price * popupQty;
+  cart[id].q+=popupQty;
+  total+=price*popupQty;
 
   updateTotal();
   renderCart();
@@ -492,25 +397,29 @@ function savePopup(){
   closePopup();
 }
 
+/* CATEGORY */
+function toggleCategory(cat){
+  let el = document.getElementById("cat_"+cat);
+  el.style.display = el.style.display==="block"?"none":"block";
+}
+
 /* RENDER */
-/* RENDER MENU */
 function render(){
-  let keyword = document.getElementById("search").value.toLowerCase();
+  let key = document.getElementById("search").value.toLowerCase();
   let html="";
 
   for(const cat in data){
 
-    let menuHTML = "";
+    let menuHTML="";
 
     for(const item in data[cat]){
-      let val = data[cat][item];
-      let price = typeof val==="number"?val:val.price;
+      let val=data[cat][item];
+      let price= typeof val==="number"?val:val.price;
 
-      if(item.toLowerCase().includes(keyword)){
+      if(item.toLowerCase().includes(key)){
         menuHTML+=`
-        <div class="menu" onclick="event.stopPropagation(); openPopup('${item}', data['${cat}']['${item}'])">
-          <b>${item}</b><br>
-          Rp ${formatRp(price)}
+        <div class="menu" onclick="event.stopPropagation();openPopup('${item}',data['${cat}']['${item}'])">
+          ${item}<br>Rp ${formatRp(price)}
         </div>`;
       }
     }
@@ -521,57 +430,53 @@ function render(){
         <b>${cat}</b>
       </div>
 
-      <div id="cat_${cat}" style="display:none; margin-left:10px;">
+      <div id="cat_${cat}" style="display:none;margin-left:10px;">
         ${menuHTML}
       </div>`;
     }
   }
 
-  document.getElementById("menu").innerHTML = html;
+  document.getElementById("menu").innerHTML=html;
 }
 
-/* RENDER CART */
+/* CART */
 function renderCart(){
-  let html = "";
-
-  if(Object.keys(cart).length === 0){
-    document.getElementById("cartList").innerHTML = "Keranjang kosong";
-    return;
-  }
+  let html="";
 
   for(const id in cart){
     let item = cart[id];
 
-    html += `
-    <div class="menu">
-      <b>${item.name}</b><br>
-      Qty: ${item.q}
-
-      <br>
-      <button onclick="changeCart('${id}', -1)">-</button>
-      <button onclick="changeCart('${id}', 1)">+</button>
-
-      <div style="font-size:12px; margin-top:5px;">`;
+    html+=`<div class="menu"><b>${item.name}</b> x ${item.q}<br>`;
 
     item.detail.forEach(d=>{
-      let txt = [];
+      let txt=[];
       if(d.varian) txt.push(d.varian);
       if(d.level) txt.push(d.level);
+      if(d.note) txt.push("Note: "+d.note);
 
-      html += `- ${txt.join(" | ")}<br>`;
+      html+=`- ${txt.join(" | ")}<br>`;
     });
 
-    html += `</div></div>`;
+    html+=`</div>`;
   }
 
-  document.getElementById("cartList").innerHTML = html;
+  document.getElementById("cartList").innerHTML = html || "Keranjang kosong";
+}
+
+function updateTotal(){
+  document.getElementById("total").innerText=formatRp(total);
 }
 
 /* INIT */
 render();
 renderCart();
 
-document.getElementById("search").addEventListener("input", render);
+/* klik luar popup */
+document.getElementById("popup").addEventListener("click", function(e){
+  if(e.target.id==="popup"){
+    closePopup();
+  }
+});
 
 </script>
 
