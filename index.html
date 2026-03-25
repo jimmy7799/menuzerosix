@@ -1,139 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZERO SIX SKY LOUNGE</title>
-
-<style>
-:root{
-  --blue:#2E86C1;
-  --blue2:#5DADE2;
-  --white:#ffffff;
-  --soft:#f4f9ff;
-  --text:#1c2b36;
-}
-
-body{
-  font-family:Arial;
-  background:var(--soft);
-  color:var(--text);
-  padding:12px;
-}
-
-h1{text-align:center;color:var(--blue)}
-h2{text-align:center;font-size:14px;color:#555}
-
-.box{
-  background:white;
-  padding:12px;
-  border-radius:12px;
-  margin-bottom:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-}
-
-.acc{
-  background:var(--blue);
-  color:white;
-  padding:10px;
-  border-radius:10px;
-  margin-top:8px;
-  cursor:pointer;
-}
-
-.panel{display:none;padding:8px}
-
-.menu{
-  padding:10px;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-}
-.menu:hover{background:#f0f8ff}
-
-.cart-item{
-  border-bottom:1px dashed #ccc;
-  padding:8px 0;
-}
-
-button{
-  background:var(--blue);
-  color:white;
-  border:none;
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-}
-button:hover{background:var(--blue2)}
-
-.total{
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
-  color:var(--blue);
-}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  background:rgba(0,0,0,.5);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-content{
-  background:white;
-  padding:15px;
-  border-radius:12px;
-  width:90%;
-  max-width:400px;
-}
-
-.qty{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin:10px 0;
-}
-</style>
-</head>
-
-<body>
-
-<h1>ZERO SIX SKY LOUNGE</h1>
-<h2>Order Menu</h2>
-
-<div class="box" id="menu"></div>
-
-<div class="box">
-  <h3>Cart</h3>
-  <div id="cart"></div>
-  <div class="total">Total: Rp <span id="total">0</span></div>
-  <button onclick="sendWA()">Kirim WA</button>
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3 id="modalTitle"></h3>
-
-    <div class="qty">
-      <button onclick="changeQty(-1)">-</button>
-      <span id="qty">1</span>
-      <button onclick="changeQty(1)">+</button>
-    </div>
-
-    <div id="variantArea"></div>
-
-    <textarea id="note" placeholder="Catatan..." style="width:100%;margin-top:10px"></textarea>
-
-    <br><br>
-    <button onclick="saveItem()">Simpan</button>
-    <button onclick="closeModal()">Batal</button>
-  </div>
-</div>
-
 <script>
 const data = {
   "SPECIAL PARADISE":{
@@ -150,6 +14,7 @@ let cart=[];
 let currentItem=null;
 let qty=1;
 let variants=[];
+let editIndex=null; // ✅ PENANDA EDIT
 
 /* RENDER MENU */
 function renderMenu(){
@@ -181,6 +46,8 @@ function toggle(i){
 function openModal(cat,item){
   const val=data[cat][item];
 
+  editIndex = null; // ✅ reset mode edit
+
   currentItem={cat,item,val};
   qty=1;
   variants=[""];
@@ -196,6 +63,7 @@ function openModal(cat,item){
 
 function closeModal(){
   document.getElementById("modal").style.display="none";
+  editIndex = null; // ✅ reset biar aman
 }
 
 function changeQty(n){
@@ -217,7 +85,7 @@ function renderVariants(){
         ${i+1}.
         <select onchange="setVar(${i},this.value)">
           <option value="">Pilih</option>
-          ${currentItem.val.options.map(o=>`<option>${o}</option>`).join("")}
+          ${currentItem.val.options.map(o=>`<option ${o===v?"selected":""}>${o}</option>`).join("")}
         </select>
       </div>`;
     });
@@ -227,7 +95,7 @@ function renderVariants(){
 
 function setVar(i,v){ variants[i]=v; }
 
-/* SAVE */
+/* SAVE (FIXED) */
 function saveItem(){
   if(currentItem.val.options){
     for(let v of variants){
@@ -238,13 +106,21 @@ function saveItem(){
     }
   }
 
-  cart.push({
-    name:currentItem.item,
-    price:currentItem.val.price||currentItem.val,
+  const newData = {
+    name: currentItem.item,
+    price: currentItem.val.price || currentItem.val,
     qty,
     variants:[...variants],
-    note:document.getElementById("note").value
-  });
+    note: document.getElementById("note").value
+  };
+
+  if(editIndex !== null){
+    // ✅ EDIT (replace)
+    cart[editIndex] = newData;
+  } else {
+    // ✅ TAMBAH BARU
+    cart.push(newData);
+  }
 
   closeModal();
   renderCart();
@@ -282,7 +158,14 @@ function deleteItem(i){
 
 function editItem(i){
   let c=cart[i];
-  currentItem={item:c.name,val:{price:c.price,options:null}};
+
+  editIndex = i; // ✅ MASUK MODE EDIT
+
+  currentItem={
+    item:c.name,
+    val:{price:c.price, options:null}
+  };
+
   qty=c.qty;
   variants=[...c.variants];
 
@@ -313,6 +196,3 @@ function sendWA(){
   window.open("https://wa.me/6285175313330?text="+encodeURIComponent(text));
 }
 </script>
-
-</body>
-</html>
