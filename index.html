@@ -376,6 +376,7 @@ function openPopup(name,val){
   popupQty = 1;
 
   document.getElementById("popupTitle").innerText = name;
+  document.getElementById("popupNote").value = ""; // reset note
   document.getElementById("popup").style.display = "flex";
 
   updatePopup();
@@ -399,12 +400,13 @@ function updatePopup(){
 
       html += `<div style="margin-bottom:10px">`;
 
-      // VARIAN
+      // ✅ VARIAN WAJIB
       if(popupItem.val.options){
         html += `
         Varian ${i+1}
         <select id="var_${i}">
-          ${popupItem.val.options.map(o=>`<option>${o}</option>`).join("")}
+          <option value="">-- pilih --</option>
+          ${popupItem.val.options.map(o=>`<option value="${o}">${o}</option>`).join("")}
         </select><br>`;
       }
 
@@ -413,7 +415,8 @@ function updatePopup(){
         html += `
         Level
         <select id="lvl_${i}">
-          ${popupItem.val.levels.map(l=>`<option>Level ${l}</option>`).join("")}
+          <option value="">-- pilih level --</option>
+          ${popupItem.val.levels.map(l=>`<option value="Level ${l}">Level ${l}</option>`).join("")}
         </select>`;
       }
 
@@ -422,6 +425,12 @@ function updatePopup(){
   }
 
   document.getElementById("popupVarian").innerHTML = html;
+}
+
+/* TOGGLE CATEGORY */
+function toggleCategory(cat){
+  let el = document.getElementById("cat_"+cat);
+  el.style.display = (el.style.display === "none") ? "block" : "none";
 }
 
 /* CLOSE */
@@ -441,6 +450,18 @@ function savePopup(){
     let level = document.getElementById("lvl_"+i)?.value || "";
     let note = document.getElementById("popupNote").value;
 
+    // ❗ VALIDASI WAJIB PILIH VARIAN
+    if(popupItem.val.options && !varian){
+      alert("Varian wajib dipilih!");
+      return;
+    }
+
+    // ❗ VALIDASI LEVEL (khusus indomie)
+    if(popupItem.val.levels && !level){
+      alert("Level wajib dipilih!");
+      return;
+    }
+
     cart[id].detail.push({varian,level,note});
   }
 
@@ -458,18 +479,25 @@ function render(){
   let html="";
 
   for(const cat in data){
-    html+=`<h3>${cat}</h3>`;
+    html+=`
+    <div class="menu" onclick="toggleCategory('${cat}')">
+      <b>📂 ${cat}</b>
+    </div>
+
+    <div id="cat_${cat}" style="display:none; margin-left:10px;">`;
 
     for(const item in data[cat]){
       let val = data[cat][item];
       let price = typeof val==="number"?val:val.price;
 
       html+=`
-      <div class="menu" onclick="openPopup('${item}', data['${cat}']['${item}'])">
+      <div class="menu" onclick="event.stopPropagation(); openPopup('${item}', data['${cat}']['${item}'])">
         <b>${item}</b><br>
         Rp ${formatRp(price)}
       </div>`;
     }
+
+    html+=`</div>`;
   }
 
   document.getElementById("menu").innerHTML = html;
@@ -490,9 +518,12 @@ function sendWA(){
     t+=it.name+" x"+it.q+"\n";
 
     it.detail.forEach(d=>{
-      t+="  - "+(d.varian||"");
-      if(d.level) t+=" ("+d.level+")";
-      t+="\n";
+      let detail = [];
+
+      if(d.varian) detail.push(d.varian);
+      if(d.level) detail.push(d.level);
+
+      t+="  - "+detail.join(" | ")+"\n";
 
       if(d.note) t+="    note: "+d.note+"\n";
     });
