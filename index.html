@@ -129,7 +129,10 @@ input, select, textarea{
 
 <div class="box">
 <input id="nama" placeholder="Nama"><br>
+<label>Tanggal</label>
 <input type="date" id="tanggal"><br>
+
+<label>Jam</label>
 <input type="time" id="jam"><br>
 <input id="eventName" placeholder="Event"><br>
 
@@ -397,6 +400,11 @@ function renderItem(category,item,val){
     </select>`;
   }
 
+  // 🔥 CATATAN PER ITEM
+  if(it.q > 0){
+  opt += `<input id="note_${id}" placeholder="Catatan item (opsional)">`;
+}
+
   return `
   <div class="menu">
     <div class="row">
@@ -483,7 +491,6 @@ function sendWA(){
   const note = document.getElementById("note").value || "-";
 
   let text=`RESERVASI ZERO SIX SKY LOUNGE
-========================
 
 📌 DATA CUSTOMER
 Nama: ${nama}
@@ -492,7 +499,7 @@ Jam: ${jam}
 Event: ${eventName}
 Lokasi: ${lokasi}
 Pax: ${pax}
-========================
+
 🍽 DETAIL PESANAN
 `;
 
@@ -505,25 +512,28 @@ Pax: ${pax}
       let sub=it.q*it.p;
       let varian=document.getElementById("opt_"+id)?.value;
       let level=document.getElementById("lvl_"+id)?.value;
+      let noteItem=document.getElementById("note_"+id)?.value;
 
       text+=`${i}. ${it.name} x${it.q} = Rp ${formatRp(sub)}\n`;
 
       if(varian) text+=`   • ${varian}\n`;
       if(level) text+=`   • ${level}\n`;
+      if(noteItem) text+=`   • Catatan: ${noteItem}\n`;
 
       i++;
     }
   }
 
   text+=`
-📝 CATATAN
+📝 CATATAN TAMBAHAN
 ${note}
-========================
-💰 TOTAL
-Rp ${formatRp(total)}
+
+💰 TOTAL: Rp ${formatRp(total)}
 `;
 
-  window.open(`https://wa.me/6285175313330?text=${encodeURIComponent(text)}`);
+  const url = "https://wa.me/6285175313330?text=" + encodeURIComponent(text);
+
+  window.open(url, "_blank");
 }
 
 /* ========= INIT ========= */
