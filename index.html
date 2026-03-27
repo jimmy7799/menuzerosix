@@ -6,6 +6,16 @@
 <title>ZERO SIX SKY LOUNGE - ORDER</title>
 
 <style>
+
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 1: BODY & BACKGROUND
+   👉 Background utama + overlay blur
+===================================================== */
+
+
 body{
   font-family:Arial;
   background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
@@ -25,7 +35,16 @@ body::before{
   z-index:-1;
 }
 
-/* BOX */
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 2: BOX CONTAINER
+   👉 Semua card / kotak
+===================================================== */
+
+
+
 .box{
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -35,7 +54,14 @@ body::before{
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
-/* ACCORDION */
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 3: MENU & ACCORDION
+===================================================== */
+
+
 .acc{
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   color:#fff;
@@ -63,7 +89,16 @@ body::before{
   align-items:center;
 }
 
-/* BUTTON */
+
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 4: BUTTON
+===================================================== */
+
+
+
 button{
   padding:5px 10px;
   margin:2px;
@@ -75,7 +110,14 @@ button{
   cursor:pointer;
 }
 
-/* INPUT */
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 5: FORM INPUT
+===================================================== */
+
+
 input, select, textarea{
   width:100%;
   margin-top:6px;
@@ -88,52 +130,54 @@ input, select, textarea{
 
 ::placeholder{color:rgba(255,255,255,0.7)}
 
+
+
+
+/* =====================================================
+   🎨 MODULE CSS 6: TOTAL DISPLAY
+===================================================== */
+
+
+
 #total{
   color:#ffd369;
   font-weight:bold;
   font-size:18px;
 }
 
-/* WAVE */
-.wave{
-  position: fixed;
-  bottom:0;
-  left:0;
-  width:200%;
-  height:120px;
-  background: url('https://i.ibb.co/wQZVxxk/wave.png') repeat-x;
-  background-size:1000px 120px;
-  animation: waveMove 10s linear infinite;
-  opacity:0.5;
-}
-.wave2{
-  animation: waveMove 15s linear infinite reverse;
-  opacity:0.3;
-  bottom:10px;
-}
-.wave3{
-  animation: waveMove 20s linear infinite;
-  opacity:0.2;
-  bottom:20px;
-}
-@keyframes waveMove{
-  from{transform: translateX(0);}
-  to{transform: translateX(-1000px);}
-}
+
+
+/* =====================================================
+   🎨 MODULE CSS 7: FINISH
+===================================================== */
+
 </style>
 </head>
 
 <body>
 
-<h2>🌴 ZERO SIX SKY LOUNGE</h2>
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 1: HEADER
+===================================================== -->
+<h2>ZERO SIX SKY LOUNGE</h2>
+
+
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 2: FORM CUSTOMER
+===================================================== -->
+
 
 <div class="box">
 <input id="nama" placeholder="Nama"><br>
-<label>Tanggal</label>
-<input type="date" id="tanggal"><br>
 
-<label>Jam</label>
-<input type="time" id="jam"><br>
+<input type="date" id="tanggal" placeholder="Tanggal"><br>
+<input type="time" id="jam" placeholder="Jam"><br>
+
+
 <input id="eventName" placeholder="Event"><br>
 
 <select id="lokasi">
@@ -148,24 +192,56 @@ input, select, textarea{
 <button onclick="applySearch()">Search</button>
 </div>
 
+
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 3: MENU LIST
+===================================================== -->
 <div id="menu" class="box"></div>
 
+
+
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 4: TOTAL
+===================================================== -->
 <div class="box">
 TOTAL: Rp <span id="total">0</span>
 </div>
 
+
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 5: CATATAN + KIRIM WA
+===================================================== -->
 <div class="box">
 <textarea id="note" placeholder="Catatan"></textarea>
 <button onclick="sendWA()">Kirim WA</button>
 </div>
 
-<!-- WAVE -->
-<div class="wave"></div>
-<div class="wave wave2"></div>
-<div class="wave wave3"></div>
 
+
+
+<!-- =====================================================
+     🧩 MODULE HTML 6: SCRIPT
+===================================================== -->
 <script>
-/* ========= DATA (CONTOH SAJA) ========= */
+
+
+
+
+
+
+
+
+/* =====================================================
+   📦 MODULE 1: DATA MENU
+   👉 Tempat semua menu & harga
+   👉 Edit di sini kalau mau tambah / ubah menu
+===================================================== */
 const data = {
 
   "SPECIAL PARADISE": {
@@ -358,26 +434,60 @@ const data = {
   }
 };
 
-/* ========= STATE ========= */
+
+
+
+
+
+
+/* =====================================================
+   📦 MODULE 2: STATE (DATA SEMENTARA)
+   👉 Menyimpan cart, total, dll
+===================================================== */
 let cart = {};
 let total = 0;
 let searchQuery = "";
 let activeCategory = Object.keys(data)[0];
 
-/* ========= UTIL ========= */
-function formatRp(n){return Number(n||0).toLocaleString("id-ID");}
-function getItemPrice(v){return typeof v==="number"?v:v.price||0;}
-function makeId(c,i){return (c+"_"+i).replace(/\W/g,"_");}
 
-/* ========= SEARCH ========= */
+
+
+/* =====================================================
+   📦 MODULE 3: UTIL FUNCTION
+   👉 Fungsi bantu (format, id, dll)
+===================================================== */
+function formatRp(n){
+  return Number(n||0).toLocaleString("id-ID");
+}
+
+function getItemPrice(v){
+  return typeof v==="number"?v:v.price||0;
+}
+
+function makeId(c,i){
+  return (c+"_"+i).replace(/\W/g,"_");
+}
+
+
+
+/* =====================================================
+   📦 MODULE 4: SEARCH SYSTEM
+   👉 Untuk filter menu
+===================================================== */
 function applySearch(){
   searchQuery = document.getElementById("search").value.toLowerCase();
   activeCategory = "ALL";
   render();
 }
 
-/* ========= ITEM ========= */
+
+
+/* =====================================================
+   📦 MODULE 5: RENDER ITEM
+   👉 Menampilkan 1 item menu
+===================================================== */
 function renderItem(category,item,val){
+
   const price = getItemPrice(val);
   const id = makeId(category,item);
   const it = cart[id] || {q:0};
@@ -386,6 +496,7 @@ function renderItem(category,item,val){
 
   let opt = "";
 
+  // VARIAN
   if(val.options){
     opt += `<select id="opt_${id}">
       <option value="">Varian</option>
@@ -393,6 +504,7 @@ function renderItem(category,item,val){
     </select>`;
   }
 
+  // LEVEL
   if(val.levels){
     opt += `<select id="lvl_${id}">
       <option value="">Level</option>
@@ -400,10 +512,8 @@ function renderItem(category,item,val){
     </select>`;
   }
 
-  // 🔥 CATATAN PER ITEM
-  if(it.q > 0){
-  opt += `<input id="note_${id}" placeholder="Catatan item (opsional)">`;
-}
+  // CATATAN
+  opt += `<input id="note_${id}" placeholder="Catatan item">`;
 
   return `
   <div class="menu">
@@ -419,8 +529,13 @@ function renderItem(category,item,val){
   </div>`;
 }
 
-/* ========= RENDER ========= */
+
+
+/* =====================================================
+   📦 MODULE 6: RENDER SEMUA MENU
+===================================================== */
 function render(){
+
   let html = "";
 
   for(const cat in data){
@@ -445,49 +560,91 @@ function render(){
   document.getElementById("menu").innerHTML = html;
 }
 
-/* ========= ACCORDION ========= */
+
+
+
+
+/* =====================================================
+   📦 MODULE 7: ACCORDION (BUKA TUTUP MENU)
+===================================================== */
 function toggle(cat){
   activeCategory = activeCategory===cat ? null : cat;
   render();
 }
 
-/* ========= CART ========= */
+
+
+
+
+/* =====================================================
+   📦 MODULE 8: CART SYSTEM (+ / -)
+===================================================== */
 function add(n,p,id){
   if(!cart[id]) cart[id]={name:n,q:0,p:p};
-  cart[id].q++; total+=p;
-  document.getElementById("q_"+id).innerText=cart[id].q;
-  document.getElementById("total").innerText=formatRp(total);
+  cart[id].q++;
+  total += p;
+
+  document.getElementById("q_"+id).innerText = cart[id].q;
+  document.getElementById("total").innerText = formatRp(total);
 }
 
 function remove(n,p,id){
   if(cart[id] && cart[id].q>0){
-    cart[id].q--; total-=p;
-    document.getElementById("q_"+id).innerText=cart[id].q;
-    document.getElementById("total").innerText=formatRp(total);
+    cart[id].q--;
+    total -= p;
+
+    document.getElementById("q_"+id).innerText = cart[id].q;
+    document.getElementById("total").innerText = formatRp(total);
   }
 }
 
-/* ========= FORMAT ========= */
+
+
+/* =====================================================
+   📦 MODULE 9: FORMAT DATA
+===================================================== */
 function formatTanggal(t){
   if(!t) return "-";
   const b=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
   const d=new Date(t);
   return `${d.getDate()} ${b[d.getMonth()]} ${d.getFullYear()}`;
 }
+
 function formatJam(j){
   if(!j) return "-";
   return j.replace(":",".")+" WIB";
 }
 
-/* ========= WA ========= */
+
+
+/* =====================================================
+   📦 MODULE 10: WHATSAPP SYSTEM
+   👉 Kirim data ke WA
+===================================================== */
 function sendWA(){
 
-  const nama = document.getElementById("nama").value || "-";
-  const tanggal = formatTanggal(document.getElementById("tanggal").value);
-  const jam = formatJam(document.getElementById("jam").value);
+  const namaInput = document.getElementById("nama").value;
+  const tanggalInput = document.getElementById("tanggal").value;
+  const jamInput = document.getElementById("jam").value;
+  const paxInput = document.getElementById("pax").value;
+
+  
+
+// VALIDASI
+  if(!namaInput) return alert("Nama wajib diisi");
+  if(!tanggalInput) return alert("Tanggal wajib diisi");
+  if(!jamInput) return alert("Jam wajib diisi");
+  if(!paxInput || paxInput==0) return alert("Jumlah pax wajib diisi");
+  if(total==0) return alert("Pesanan masih kosong");
+
+
+
+  const nama = namaInput;
+  const tanggal = formatTanggal(tanggalInput);
+  const jam = formatJam(jamInput);
   const eventName = document.getElementById("eventName").value || "-";
   const lokasi = document.getElementById("lokasi").value || "-";
-  const pax = document.getElementById("pax").value || "-";
+  const pax = paxInput;
   const note = document.getElementById("note").value || "-";
 
   let text=`RESERVASI ZERO SIX SKY LOUNGE
@@ -532,14 +689,16 @@ ${note}
 `;
 
   const url = "https://wa.me/6285175313330?text=" + encodeURIComponent(text);
-
   window.open(url, "_blank");
 }
 
-/* ========= INIT ========= */
+
+
+/* =====================================================
+   📦 MODULE 11: INIT
+===================================================== */
 render();
 
-// ENTER SEARCH
 document.getElementById("search").addEventListener("keypress", function(e){
   if(e.key === "Enter"){
     applySearch();
@@ -547,8 +706,3 @@ document.getElementById("search").addEventListener("keypress", function(e){
 });
 
 </script>
-
-
-
-</body>
-</html>
