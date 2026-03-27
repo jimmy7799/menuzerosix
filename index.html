@@ -2,136 +2,167 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZERO SIX SKY LOUNGE - ORDER</title>
 
 <style>
 body{
   font-family:Arial;
-  background: linear-gradient(135deg, #e3f6ff, #cdefff);
-  color:#1b3a4b;
+  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
+  background-size: cover;
+  color:#fff;
   padding:12px;
+  position: relative;
 }
 
+/* overlay blur */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background: rgba(10,40,70,0.6);
+  backdrop-filter: blur(6px);
+  z-index:-1;
+}
+
+/* BOX */
 .box{
-  background:#ffffff;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
   padding:12px;
   border-radius:14px;
   margin-bottom:12px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
+/* ACCORDION */
+.acc{
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color:#fff;
+  padding:10px;
+  margin-top:10px;
+  cursor:pointer;
+  font-weight:bold;
+  border-radius:10px;
+}
+
+/* PANEL */
+.panel{display:none;padding:8px}
+
+/* MENU */
 .menu{
-  border-bottom:1px dashed #b5e3f5;
+  border-bottom:1px dashed rgba(255,255,255,0.3);
   margin-bottom:10px;
   padding-bottom:10px;
-  cursor:pointer;
 }
 
+/* ROW */
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* BUTTON */
 button{
-  background:linear-gradient(135deg,#5fd3ff,#2fb7ff);
+  padding:5px 10px;
+  margin:2px;
   border:none;
-  padding:6px 12px;
   border-radius:8px;
-  color:#fff;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  color:white;
   font-weight:bold;
   cursor:pointer;
 }
 
+/* INPUT */
 input, select, textarea{
   width:100%;
-  margin-bottom:8px;
+  margin-top:6px;
   padding:8px;
   border-radius:8px;
-  border:1px solid #cdefff;
+  border:none;
+  background: rgba(255,255,255,0.15);
+  color:#fff;
 }
 
-.popup{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.4);
-  display:none;
-  align-items:center;
-  justify-content:center;
+::placeholder{color:rgba(255,255,255,0.7)}
+
+#total{
+  color:#ffd369;
+  font-weight:bold;
+  font-size:18px;
 }
 
-.popup-box{
-  background:#fff;
-  padding:20px;
-  border-radius:16px;
-  width:320px;
+/* WAVE */
+.wave{
+  position: fixed;
+  bottom:0;
+  left:0;
+  width:200%;
+  height:120px;
+  background: url('https://i.ibb.co/wQZVxxk/wave.png') repeat-x;
+  background-size:1000px 120px;
+  animation: waveMove 10s linear infinite;
+  opacity:0.5;
+}
+.wave2{
+  animation: waveMove 15s linear infinite reverse;
+  opacity:0.3;
+  bottom:10px;
+}
+.wave3{
+  animation: waveMove 20s linear infinite;
+  opacity:0.2;
+  bottom:20px;
+}
+@keyframes waveMove{
+  from{transform: translateX(0);}
+  to{transform: translateX(-1000px);}
 }
 </style>
 </head>
 
 <body>
 
-<h2>ORDER MENU</h2>
+<h2>🌴 ZERO SIX SKY LOUNGE</h2>
 
-<!-- RESERVASI -->
 <div class="box">
-  <input id="nama" placeholder="Nama Pembeli" />
-  <input type="date" id="tanggal" />
-  <input type="time" id="jam" />
-  <input id="eventName" placeholder="Event" />
+<input id="nama" placeholder="Nama"><br>
+<input type="date" id="tanggal"><br>
+<input type="time" id="jam"><br>
+<input id="eventName" placeholder="Event"><br>
 
-  <select id="lokasi">
-    <option value="">Pilih Lokasi</option>
-    <option>Indoor</option>
-    <option>Outdoor</option>
-  </select>
+<select id="lokasi">
+<option value="">Lokasi</option>
+<option>Indoor</option>
+<option>Outdoor</option>
+</select>
 
-  <input type="number" id="pax" placeholder="Jumlah Pax" />
+<input type="number" id="pax" placeholder="Pax"><br>
+
+<input id="search" placeholder="Cari menu">
+<button onclick="applySearch()">Search</button>
 </div>
 
-<!-- SEARCH -->
-<div class="box">
-  <input id="search" placeholder="Cari menu..." oninput="render()" />
-</div>
-
-<!-- MENU -->
 <div id="menu" class="box"></div>
-
-<!-- CART -->
-<div class="box">
-<h3>🛒 Keranjang</h3>
-<div id="cartList">Kosong</div>
-</div>
 
 <div class="box">
 TOTAL: Rp <span id="total">0</span>
 </div>
 
-<!-- CATATAN + WA -->
 <div class="box">
-  <textarea id="note" placeholder="Catatan umum"></textarea>
-  <button onclick="sendWA()" style="width:100%;padding:12px;">
-    Kirim ke WhatsApp
-  </button>
+<textarea id="note" placeholder="Catatan"></textarea>
+<button onclick="sendWA()">Kirim WA</button>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <h3 id="popupTitle"></h3>
-
-    Qty:
-    <button onclick="changeQty(-1)">-</button>
-    <span id="popupQty">1</span>
-    <button onclick="changeQty(1)">+</button>
-
-    <div id="popupVarian"></div>
-
-    <textarea id="popupNote" placeholder="Catatan item"></textarea>
-
-    <button onclick="savePopup()">Simpan</button>
-    <button onclick="closePopup()">Batal</button>
-  </div>
-</div>
+<!-- WAVE -->
+<div class="wave"></div>
+<div class="wave wave2"></div>
+<div class="wave wave3"></div>
 
 <script>
-
-/* DATA (SINGKAT CONTOH) */
+/* ========= DATA (CONTOH SAJA) ========= */
 const data = {
 
   "SPECIAL PARADISE": {
@@ -161,7 +192,7 @@ const data = {
     "Nasi Ayam Geprek": 20000
   },
 
-  "CHEFS SELECTION": {
+  "CHEF'S SELECTION": {
     "Pasta Carbonara": { price: 25000, options: ["Fusili","Penne","Makaroni"] },
     "Pasta Butter Cheese": { price: 20000, options: ["Fusili","Penne","Makaroni"] },
     "Pasta Bolognese": { price: 20000, options: ["Fusili","Penne","Makaroni"] },
@@ -324,202 +355,190 @@ const data = {
   }
 };
 
+/* ========= STATE ========= */
 let cart = {};
 let total = 0;
-let popupItem=null;
-let popupQty=1;
+let searchQuery = "";
+let activeCategory = Object.keys(data)[0];
 
-function formatRp(n){
-  return Number(n).toLocaleString("id-ID");
+/* ========= UTIL ========= */
+function formatRp(n){return Number(n||0).toLocaleString("id-ID");}
+function getItemPrice(v){return typeof v==="number"?v:v.price||0;}
+function makeId(c,i){return (c+"_"+i).replace(/\W/g,"_");}
+
+/* ========= SEARCH ========= */
+function applySearch(){
+  searchQuery = document.getElementById("search").value.toLowerCase();
+  activeCategory = "ALL";
+  render();
 }
 
-/* POPUP */
-function openPopup(name,val){
-  popupItem={name,val};
-  popupQty=1;
-  document.getElementById("popupTitle").innerText=name;
-  document.getElementById("popupNote").value="";
-  document.getElementById("popup").style.display="flex";
-  updatePopup();
-}
+/* ========= ITEM ========= */
+function renderItem(category,item,val){
+  const price = getItemPrice(val);
+  const id = makeId(category,item);
+  const it = cart[id] || {q:0};
 
-function closePopup(){
-  document.getElementById("popup").style.display="none";
-}
+  if(searchQuery && !item.toLowerCase().includes(searchQuery)) return "";
 
-function changeQty(v){
-  popupQty+=v;
-  if(popupQty<1) popupQty=1;
-  updatePopup();
-}
+  let opt = "";
 
-function updatePopup(){
-  document.getElementById("popupQty").innerText=popupQty;
-
-  let html="";
-
-  if(typeof popupItem.val==="object"){
-    for(let i=0;i<popupQty;i++){
-
-      html+=`<div>`;
-
-      if(popupItem.val.options){
-        html+=`
-        Varian
-        <select id="var_${i}">
-          <option value="">-- pilih --</option>
-          ${popupItem.val.options.map(o=>`<option>${o}</option>`).join("")}
-        </select>`;
-      }
-
-      if(popupItem.val.levels){
-        html+=`
-        Level
-        <select id="lvl_${i}">
-          <option value="">-- pilih --</option>
-          ${popupItem.val.levels.map(l=>`<option>${l}</option>`).join("")}
-        </select>`;
-      }
-
-      html+=`</div>`;
-    }
+  if(val.options){
+    opt += `<select id="opt_${id}">
+      <option value="">Varian</option>
+      ${val.options.map(o=>`<option>${o}</option>`).join("")}
+    </select>`;
   }
 
-  document.getElementById("popupVarian").innerHTML=html;
-}
-
-/* SAVE */
-function savePopup(){
-  let price = typeof popupItem.val==="number"?popupItem.val:popupItem.val.price;
-  let id = popupItem.name;
-
-  if(!cart[id]) cart[id]={name:id,q:0,p:price,detail:[]};
-
-  for(let i=0;i<popupQty;i++){
-    let varian = document.getElementById("var_"+i)?.value || "";
-    let level = document.getElementById("lvl_"+i)?.value || "";
-    let note = document.getElementById("popupNote").value;
-
-    cart[id].detail.push({varian,level,note});
+  if(val.levels){
+    opt += `<select id="lvl_${id}">
+      <option value="">Level</option>
+      ${val.levels.map(l=>`<option>Level ${l}</option>`).join("")}
+    </select>`;
   }
 
-  cart[id].q+=popupQty;
-  total+=price*popupQty;
-
-  renderCart();
-  updateTotal();
-  closePopup();
+  return `
+  <div class="menu">
+    <div class="row">
+      <span>${item} - Rp ${formatRp(price)}</span>
+      <div>
+        <button onclick="add('${item}',${price},'${id}')">+</button>
+        <span id="q_${id}">${it.q}</span>
+        <button onclick="remove('${item}',${price},'${id}')">-</button>
+      </div>
+    </div>
+    ${opt}
+  </div>`;
 }
 
-/* CATEGORY */
-function toggleCategory(cat){
-  let el = document.getElementById("cat_"+cat);
-  el.style.display = el.style.display==="block"?"none":"block";
-}
-
-/* RENDER */
+/* ========= RENDER ========= */
 function render(){
-  let key = document.getElementById("search").value.toLowerCase();
-  let html="";
+  let html = "";
 
   for(const cat in data){
 
-    let menuHTML="";
+    const open = activeCategory===cat || activeCategory==="ALL";
+
+    html += `<div class="acc" onclick="toggle('${cat}')">${cat}</div>`;
+    html += `<div class="panel" style="display:${open?'block':'none'}">`;
+
+    let found=false;
 
     for(const item in data[cat]){
-      let val=data[cat][item];
-      let price= typeof val==="number"?val:val.price;
-
-      if(item.toLowerCase().includes(key)){
-        menuHTML+=`
-        <div class="menu" onclick="event.stopPropagation();openPopup('${item}',data['${cat}']['${item}'])">
-          ${item}<br>Rp ${formatRp(price)}
-        </div>`;
-      }
+      const h = renderItem(cat,item,data[cat][item]);
+      if(h){html+=h;found=true;}
     }
 
-    if(menuHTML){
-      html+=`
-      <div class="menu" onclick="toggleCategory('${cat}')"><b>${cat}</b></div>
-      <div id="cat_${cat}" style="display:none;margin-left:10px;">
-        ${menuHTML}
-      </div>`;
-    }
+    if(!found) html += "Tidak ada menu";
+
+    html += "</div>";
   }
 
-  document.getElementById("menu").innerHTML=html;
+  document.getElementById("menu").innerHTML = html;
 }
 
-/* CART */
-function renderCart(){
-  let html="";
-
-  for(const id in cart){
-    let item = cart[id];
-
-    html+=`<div class="menu"><b>${item.name}</b> x ${item.q}<br>`;
-
-    item.detail.forEach(d=>{
-      html+=`- ${d.varian||""} ${d.level||""} ${d.note?("("+d.note+")"):""}<br>`;
-    });
-
-    html+=`</div>`;
-  }
-
-  document.getElementById("cartList").innerHTML = html || "Kosong";
+/* ========= ACCORDION ========= */
+function toggle(cat){
+  activeCategory = activeCategory===cat ? null : cat;
+  render();
 }
 
-function updateTotal(){
+/* ========= CART ========= */
+function add(n,p,id){
+  if(!cart[id]) cart[id]={name:n,q:0,p:p};
+  cart[id].q++; total+=p;
+  document.getElementById("q_"+id).innerText=cart[id].q;
   document.getElementById("total").innerText=formatRp(total);
 }
 
-/* WA */
-function sendWA(){
-
-  const nama = document.getElementById("nama").value;
-  const tanggal = document.getElementById("tanggal").value;
-  const jam = document.getElementById("jam").value;
-  const eventName = document.getElementById("eventName").value;
-  const lokasi = document.getElementById("lokasi").value;
-  const pax = document.getElementById("pax").value;
-  const note = document.getElementById("note").value;
-
-  if(!nama || !tanggal || !jam || !eventName || !lokasi || !pax){
-    alert("Lengkapi data reservasi");
-    return;
+function remove(n,p,id){
+  if(cart[id] && cart[id].q>0){
+    cart[id].q--; total-=p;
+    document.getElementById("q_"+id).innerText=cart[id].q;
+    document.getElementById("total").innerText=formatRp(total);
   }
-
-  let text = "RESERVASI\n\n";
-  text += "Nama: "+nama+"\n";
-  text += "Tanggal: "+tanggal+"\n";
-  text += "Jam: "+jam+"\n";
-  text += "Event: "+eventName+"\n";
-  text += "Lokasi: "+lokasi+"\n";
-  text += "Pax: "+pax+"\n\n";
-
-  for(const id in cart){
-    let item = cart[id];
-    text += "- "+item.name+" x"+item.q+"\n";
-
-    item.detail.forEach(d=>{
-      text += "   "+(d.varian||"")+" "+(d.level||"")+" "+(d.note||"")+"\n";
-    });
-  }
-
-  text += "\nTOTAL: Rp "+formatRp(total);
-
-  window.open("https://wa.me/6285175313330?text="+encodeURIComponent(text));
 }
 
-/* INIT */
-render();
-renderCart();
+/* ========= FORMAT ========= */
+function formatTanggal(t){
+  if(!t) return "-";
+  const b=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  const d=new Date(t);
+  return `${d.getDate()} ${b[d.getMonth()]} ${d.getFullYear()}`;
+}
+function formatJam(j){
+  if(!j) return "-";
+  return j.replace(":",".")+" WIB";
+}
 
-document.getElementById("popup").addEventListener("click", e=>{
-  if(e.target.id==="popup") closePopup();
+/* ========= WA ========= */
+function sendWA(){
+
+  const nama = document.getElementById("nama").value || "-";
+  const tanggal = formatTanggal(document.getElementById("tanggal").value);
+  const jam = formatJam(document.getElementById("jam").value);
+  const eventName = document.getElementById("eventName").value || "-";
+  const lokasi = document.getElementById("lokasi").value || "-";
+  const pax = document.getElementById("pax").value || "-";
+  const note = document.getElementById("note").value || "-";
+
+  let text=`RESERVASI ZERO SIX SKY LOUNGE
+========================
+
+📌 DATA CUSTOMER
+Nama: ${nama}
+Tanggal: ${tanggal}
+Jam: ${jam}
+Event: ${eventName}
+Lokasi: ${lokasi}
+Pax: ${pax}
+========================
+🍽 DETAIL PESANAN
+`;
+
+  let i=1;
+
+  for(const id in cart){
+    let it=cart[id];
+    if(it.q>0){
+
+      let sub=it.q*it.p;
+      let varian=document.getElementById("opt_"+id)?.value;
+      let level=document.getElementById("lvl_"+id)?.value;
+
+      text+=`${i}. ${it.name} x${it.q} = Rp ${formatRp(sub)}\n`;
+
+      if(varian) text+=`   • ${varian}\n`;
+      if(level) text+=`   • ${level}\n`;
+
+      i++;
+    }
+  }
+
+  text+=`
+📝 CATATAN
+${note}
+========================
+💰 TOTAL
+Rp ${formatRp(total)}
+`;
+
+  window.open(`https://wa.me/6285175313330?text=${encodeURIComponent(text)}`);
+}
+
+/* ========= INIT ========= */
+render();
+
+// ENTER SEARCH
+document.getElementById("search").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    applySearch();
+  }
 });
 
 </script>
+
+
 
 </body>
 </html>
